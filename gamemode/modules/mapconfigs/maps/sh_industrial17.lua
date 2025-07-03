@@ -333,7 +333,6 @@ apex.mapconfig.Register("rp_apex_industrial17_b10", {
 		Vector(2837,2898,673)
 	},
 	InitPostEntity = function()
-		
 		for k, v in pairs(ents.FindByClass("prop_dynamic")) do
 			if ( v:GetModel():lower():find("models/props_interiors/vendingmachinesoda01a.mdl") ) then
 				local ent = ents.Create("hl2rp_vendingm")
