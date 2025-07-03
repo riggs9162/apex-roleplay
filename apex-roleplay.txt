@@ -1,0 +1,8 @@
+"apex-roleplay"
+{
+    "base"          "sandbox"
+    "title"         "apex-roleplay.com | Half-Life 2 Roleplay"
+    "author"        "Riggs"
+    "maps"          "^rp_"
+    "menusystem"    "1"
+}
