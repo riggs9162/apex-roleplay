@@ -34,22 +34,37 @@ function apex.mapconfig.Register(map, tbl)
 end
 
 if ( SERVER ) then
-	concommand.Add("debug_getid",function(p)
-		p:ChatPrint(p:GetEyeTrace().Entity:MapCreationID())
-		p:ChatPrint(p:GetEyeTrace().Entity:GetClass())
+	concommand.Add("debug_getid",function(client, cmd, args)
+		local trace = client:GetEyeTrace()
+		local entity = trace.Entity
+		if ( !IsValid(entity) ) then
+			client:ChatPrint("No valid entity under your crosshair.")
+			return
+		end
+
+		client:ChatPrint(entity:MapCreationID())
+		client:ChatPrint(entity:GetClass())
 	end)
 end
 
 if ( CLIENT ) then
 	local tbl = {}
-	concommand.Add("debug_adddoor",function()
-		local e = LocalPlayer():GetEyeTrace().Entity
-		if e then
-			table.insert(tbl,e:GetPos())
+	concommand.Add("debug_add_door",function(client, cmd, args)
+		if ( !IsValid(client) ) then return end
+		local entity = client:GetEyeTrace().Entity
+		if ( IsValid(entity) ) then
+			table.insert(tbl, entity:GetPos())
 		end
-		for v,k in pairs(tbl)do
-			print("Vector("..k.x..","..k.y..","..k.z.."),")
+
+		for k, v in pairs(tbl) do
+			print("Vector(" .. v.x .. "," .. v.y .. "," .. v.z .. "),")
 		end
+	end)
+
+	concommand.Add("debug_clear_door",function(client, cmd, args)
+		if ( !IsValid(client) ) then return end
+		tbl = {}
+		print("Cleared door positions.")
 	end)
 end
 
