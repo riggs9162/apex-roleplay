@@ -257,7 +257,7 @@ hook.Add("PlayerFootstep", "OWFootstep", PlayerFootstep )
 concommand.Add("apex_fcitopt", function(client, command, args)
 	if ( !client:IsSuperAdmin() ) then return end
 
-	client:setOpt(client, args[1])
+	client:SetOpt(client, args[1])
 end)
 
 -- Define all citizen options in one place

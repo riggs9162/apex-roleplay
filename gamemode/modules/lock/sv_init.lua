@@ -42,7 +42,7 @@ end )
 
 hook.Add( "InitPostEntity", "LockDoors", function()
     for _, door(ents.GetAll()) do
-        if ( IsValid( door ) and door.getKeysDoorGroup and door:getKeysDoorGroup() == table.HasValue(DoorGroup)  ) then
+        if ( IsValid( door ) and door.getKeysDoorGroup and door:GetKeysDoorGroup() == table.HasValue(DoorGroup)  ) then
             door:Fire( "lock" )
         end
     end

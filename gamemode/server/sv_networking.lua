@@ -53,7 +53,7 @@ function entityMeta:clearNetVars(receiver)
 	netstream.Start(receiver, "nDel", self:EntIndex())
 end
 
-function entityMeta:setNetVar(key, value, receiver)
+function entityMeta:SetNetVar(key, value, receiver)
 	if (checkBadType(key, value)) then return end
 		
 	apex.net[self] = apex.net[self] or {}
@@ -65,7 +65,7 @@ function entityMeta:setNetVar(key, value, receiver)
 	self:sendNetVar(key, receiver)
 end
 
-function entityMeta:getNetVar(key, default)
+function entityMeta:GetNetVar(key, default)
 	if (apex.net[self] and apex.net[self][key] != nil) then
 		return apex.net[self][key]
 	end
@@ -73,7 +73,7 @@ function entityMeta:getNetVar(key, default)
 	return default
 end
 
-function playerMeta:setLocalVar(key, value)
+function playerMeta:SetLocalVar(key, value)
 	if (checkBadType(key, value)) then return end
 	
 	apex.net[self] = apex.net[self] or {}

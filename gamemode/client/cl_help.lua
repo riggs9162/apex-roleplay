@@ -29,7 +29,7 @@ function GM:RemoveHelpCategory(id)
 	HelpCategories[id] = nil
 end
 
-function GM:getHelpCategories()
+function GM:GetHelpCategories()
 	return HelpCategories
 end
 

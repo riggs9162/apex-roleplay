@@ -1,8 +1,8 @@
 local playerMeta = FindMetaTable("Player")
 
-function playerMeta:setWepRaised(state)
+function playerMeta:SetWepRaised(state)
 	-- Sets the networked variable for being raised.
-	self:setNetVar("raised", state)
+	self:SetNetVar("raised", state)
 
 	-- Delays any weapon shooting.
 	local weapon = self:GetActiveWeapon()
@@ -15,7 +15,7 @@ end
 
 -- Inverts whether or not the weapon is raised.
 function playerMeta:toggleWepRaised()
-	self:setWepRaised(!self:isWepRaised())
+	self:SetWepRaised(!self:isWepRaised())
 
 	local weapon = self:GetActiveWeapon()
 

@@ -38,7 +38,7 @@ function ENT:Use(activator)
 	if ( self.nextUse or 0 ) >= CurTime() then return end
 	self.nextUse = CurTime() + 2
 
-	local button = self:getNearestButton(activator)
+	local button = self:GetNearestButton(activator)
 	local stocks = util.JSONToTable(self:GetStocks())
 
 	if activator:IsCombine() then

@@ -34,7 +34,7 @@ end
 function Vote:handleEnd()
 	local win = self.yea > self.nay and 1 or self.nay > self.yea and -1 or 0
 
-	umsg.Start("KillVoteVGUI", self:getFilter())
+	umsg.Start("KillVoteVGUI", self:GetFilter())
 		umsg.String(self.id)
 	umsg.End()
 
@@ -44,7 +44,7 @@ function Vote:handleEnd()
 	self:callback(win)
 end
 
-function Vote:getFilter()
+function Vote:GetFilter()
 	local filter = RecipientFilter()
 
 	for k,v in player.Iterator() do
@@ -91,7 +91,7 @@ function GM.vote:create(question, voteType, target, time, callback, excludeVoter
 		GAMEMODE:Notify(target, 1, 4, apex.language.GetPhrase("vote_started"))
 	end
 
-	umsg.Start("DoVote", newvote:getFilter())
+	umsg.Start("DoVote", newvote:GetFilter())
 		umsg.String(question)
 		umsg.Short(newvote.id)
 		umsg.Float(time)
@@ -105,7 +105,7 @@ function GM.vote.DestroyVotesWithEnt(ent)
 		if v.target != ent then continue end
 
 		timer.Destroy(v.id .. "DarkRPVote")
-		umsg.Start("KillVoteVGUI", v:getFilter())
+		umsg.Start("KillVoteVGUI", v:GetFilter())
 			umsg.Short(v.id)
 		umsg.End()
 
@@ -121,7 +121,7 @@ function GM.vote.DestroyLast()
 	if not lastVote then return end
 
 	timer.Destroy(lastVote.id .. "DarkRPVote")
-	umsg.Start("KillVoteVGUI", lastVote:getFilter())
+	umsg.Start("KillVoteVGUI", lastVote:GetFilter())
 		umsg.Short(lastVote.id)
 	umsg.End()
 

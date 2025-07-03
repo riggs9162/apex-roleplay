@@ -18,5 +18,5 @@ function GM:KeyRelease(client, key)
 end
 
 function GM:PlayerSwitchWeapon(client, oldWeapon, newWeapon)
-	client:setWepRaised(false)
+	client:SetWepRaised(false)
 end

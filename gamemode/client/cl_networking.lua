@@ -28,7 +28,7 @@ function getNetVar(key, default)
 	return value != nil and value or default
 end
 
-function entityMeta:getNetVar(key, default)
+function entityMeta:GetNetVar(key, default)
 	local index = self:EntIndex()
 
 	if (apex.net[index] and apex.net[index][key] != nil) then

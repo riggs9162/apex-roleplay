@@ -28,7 +28,7 @@ function HelpPanel:FillHelpInfo()
 	local yoffset = 0
 
 	self.HelpInfo:Clear()
-	for k, v in pairs(GAMEMODE:getHelpCategories()) do
+	for k, v in pairs(GAMEMODE:GetHelpCategories()) do
 		self.vguiHelpCategories[k] = vgui.Create("DLabel", self.HelpInfo)
 		self.vguiHelpCategories[k]:SetText(v.name)
 		self.vguiHelpCategories[k].OrigY = yoffset

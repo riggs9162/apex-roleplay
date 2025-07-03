@@ -4,25 +4,25 @@ local meta = FindMetaTable( "Player" )
 
 function meta:addDrunkLevel(num)
 	if self:GetDarkRPVar("DrunkLevel") then
-		self:SetDarkRPVar("DrunkLevel", self:getDrunkLevel()+num)
+		self:SetDarkRPVar("DrunkLevel", self:GetDrunkLevel()+num)
 	else
 		self:SetDarkRPVar("DrunkLevel", num)
 	end
 end
 
-function meta:setDrunkLevel(num)
+function meta:SetDrunkLevel(num)
 	self:SetDarkRPVar("DrunkLevel", num)
 end
 
-function meta:getDrunkLevel()
+function meta:GetDrunkLevel()
 	return self:GetDarkRPVar("DrunkLevel")
 end
 
-function meta:setLastVomit()
+function meta:SetLastVomit()
 	self:SetDarkRPVar("LastVomit", CurTime())
 end
 
-function meta:getLastVomit()
+function meta:GetLastVomit()
 	if not self:GetDarkRPVar("LastVomit") then return 0 end
 	return CurTime()-self:GetDarkRPVar("LastVomit");
 end
@@ -61,21 +61,21 @@ end
 timer.Create( "DrunkThink", 4, 0, function()
 	for k, client in pairs( player.GetAll() ) do
 
-		if client:getDrunkLevel() and client:getDrunkLevel() > 0 then
-			--print(client:getDrunkLevel()-0.1)-- Debug Only print
-			client:setDrunkLevel(client:getDrunkLevel()-0.1)
+		if client:GetDrunkLevel() and client:GetDrunkLevel() > 0 then
+			--print(client:GetDrunkLevel()-0.1)-- Debug Only print
+			client:SetDrunkLevel(client:GetDrunkLevel()-0.1)
 		end
 
-		if client:getDrunkLevel() and client:getDrunkLevel() > 28 then
-			if client:getLastVomit() == 0 then client:setLastVomit() end
-			if client:getLastVomit() > 30 then
+		if client:GetDrunkLevel() and client:GetDrunkLevel() > 28 then
+			if client:GetLastVomit() == 0 then client:SetLastVomit() end
+			if client:GetLastVomit() > 30 then
 				client:vomit()
 				
-				client:setLastVomit()
+				client:SetLastVomit()
 			end
 		end		
 
-		if client:getDrunkLevel() and client:getDrunkLevel() > 52 then
+		if client:GetDrunkLevel() and client:GetDrunkLevel() > 52 then
 			client:Kill();
 		end		
 
@@ -84,11 +84,11 @@ timer.Create( "DrunkThink", 4, 0, function()
 end)
 
 hook.Add("OnPlayerChangedTeam", "RemoveDrunkOnChange", function(client)
-	client:setDrunkLevel(0)
+	client:SetDrunkLevel(0)
 end)
 
 hook.Add("PlayerDeath", "RemoveDrunkOnDeath", function(client)
-	client:setDrunkLevel(0)
+	client:SetDrunkLevel(0)
 end)
 
 
@@ -110,7 +110,7 @@ concommand.Add("apex_getsober", function(client)
 
 	if not client:IsAdmin() then return end
 
-	client:setDrunkLevel(0)
+	client:SetDrunkLevel(0)
 end)
 
 

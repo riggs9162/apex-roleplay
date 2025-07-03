@@ -10,7 +10,7 @@ function ENT:SetupDataTables()
     self:NetworkVar("Float", 1, "Active")
 end
 
-function ENT:getNearestButton(client)
+function ENT:GetNearestButton(client)
     client = client or (CLIENT and LocalPlayer())
 
     if not self.buttons then return end

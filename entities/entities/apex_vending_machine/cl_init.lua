@@ -47,7 +47,7 @@ function ENT:Draw()
 
     if self.buttons then
         local stocks = util.JSONToTable(self:GetStocks())
-        local closest = self:getNearestButton()
+        local closest = self:GetNearestButton()
 
         for k, buttonPos in ipairs(self.buttons) do
             local color = self:GetActive() and colors.green or colors.orange
