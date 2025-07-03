@@ -43,7 +43,7 @@ local function HasCooldown(client)
 	return false
 end
 
-function ENT:Use(_, client, _)
+function ENT:Use(client)
 	if ( !IsValid(client) or !client:IsPlayer() ) then return end
 
 	local name = client:Nick()

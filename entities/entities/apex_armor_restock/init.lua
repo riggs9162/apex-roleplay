@@ -50,6 +50,7 @@ function ENT:Initialize()
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_VPHYSICS)
     self:PhysicsInit(SOLID_VPHYSICS)
+    self:SetUseType(SIMPLE_USE)
 
     local physicsObject = self:GetPhysicsObject()
     if ( IsValid(physicsObject) ) then
@@ -58,7 +59,7 @@ function ENT:Initialize()
     end
 end
 
-function ENT:Use(_, client, _)
+function ENT:Use(client)
     if ( !IsValid(client) or !client:IsPlayer() ) then return end
 
     if ( self.NextUse and self.NextUse > CurTime() ) then
