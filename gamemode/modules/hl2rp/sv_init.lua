@@ -674,10 +674,14 @@ end)
 
 hook.Add("ZAPC_CheckAccess", "apex.ZAPC_CheckAccess", function(client, mode, apc)
 	if ( mode == "personal" ) then
-		if ( client:IsCombine() and client:Nick():find("GRID") ) then
+		if ( client:IsCombine() and client:GetDarkRPVar("division") == DIVISION_GRID ) then
 			return true
 		else
-			client:Notify("Only GRID units may enter the driver and gunner seat of the APC.")
+			if ( !client.NextAPCNotify or client.NextAPCNotify < CurTime() ) then
+				client:Notify("Only GRID units may enter the driver and gunner seat of the APC.")
+				client.NextAPCNotify = CurTime() + 1
+			end
+
 			return false
 		end
 	end
