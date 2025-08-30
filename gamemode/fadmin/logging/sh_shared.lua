@@ -2,7 +2,7 @@ CreateConVar("FAdmin_logging", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE})
 
 if SERVER then return end
 FAdmin.StartHooks["Logging"] = function()
-	FAdmin.Access.AddPrivilege("Logging", 3)
+	FAdmin.Access.AddPrivilege("Logging", 2)
 	FAdmin.Commands.AddCommand("Logging", nil)
 	
 	FAdmin.ScoreBoard.Server:AddServerSetting(function() return (tobool(GetConVarNumber("FAdmin_logging")) and "Disable" or "Enable").." Logging" end, 

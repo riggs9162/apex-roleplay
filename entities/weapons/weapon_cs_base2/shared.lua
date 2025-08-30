@@ -66,8 +66,8 @@ SWEP.MultiMode = false
 /*---------------------------------------------------------
 ---------------------------------------------------------*/
 function SWEP:Initialize()
-	if CLIENT and IsValid(self.Owner) then
-		local vm = self.Owner:GetViewModel()
+	if CLIENT and IsValid(self:GetOwner()) then
+		local vm = self:GetOwner():GetViewModel()
 		self:ResetBones(vm)
 	end
 
@@ -95,7 +95,7 @@ function SWEP:Deploy()
 	self:NewSetWeaponHoldType("normal")
 	self.CurHoldType = "normal"
 
-	self.LASTOWNER = self.Owner
+	self.LASTOWNER = self:GetOwner()
 
 	self:SetIronsights(self:GetIronsights())
 
@@ -108,20 +108,20 @@ function SWEP:Holster()
 	self.Ironsights = false
 
 	if CLIENT then
-		if IsValid(self.Owner) then
-			local vm = self.Owner:GetViewModel()
+		if IsValid(self:GetOwner()) then
+			local vm = self:GetOwner():GetViewModel()
 			self:ResetBones(vm)
 		end
 		return
 	end
-	hook.Call("UpdatePlayerSpeed", GAMEMODE, self.Owner)
+	hook.Call("UpdatePlayerSpeed", GAMEMODE, self:GetOwner())
 
 	return true
 end
 
 function SWEP:Remove()
-	if CLIENT and IsValid(self.Owner) then
-		local vm = self.Owner:GetViewModel()
+	if CLIENT and IsValid(self:GetOwner()) then
+		local vm = self:GetOwner():GetViewModel()
 		self:ResetBones(vm)
 	end
 end
@@ -135,7 +135,7 @@ function SWEP:Reload()
 	self:SetIronsights(false)
 	self:NewSetWeaponHoldType(self.HoldType)
 	self.CurHoldType = self.HoldType
-	self.Owner:SetAnimation(PLAYER_RELOAD)
+	self:GetOwner():SetAnimation(PLAYER_RELOAD)
 	timer.Simple(2, function()
 		if not IsValid(self) then return end
 		self.Reloading = false
@@ -151,25 +151,25 @@ function SWEP:PrimaryAttack( partofburst )
 
 	if not partofburst and ( self.LastNonBurst or 0 ) > CurTime() - 0.6 then return end
 
-	if self.Weapon.MultiMode and self.Owner:KeyDown( IN_USE ) then
+	if self.Weapon.MultiMode and self:GetOwner():KeyDown( IN_USE ) then
 
 		if self.FireMode == "semi" then
 
 			self.FireMode = "burst"
 			self.Primary.Automatic = false
-			self.Owner:PrintMessage( HUD_PRINTCENTER, "Switched to burst-fire mode.")
+			self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Switched to burst-fire mode.")
 
 		elseif self.FireMode == "burst" then
 
 			self.FireMode = "auto"
 			self.Primary.Automatic = true
-			self.Owner:PrintMessage( HUD_PRINTCENTER, "Switched to fully automatic fire mode.")
+			self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Switched to fully automatic fire mode.")
 
 		elseif self.FireMode == "auto" then
 
 			self.FireMode = "semi"
 			self.Primary.Automatic = false
-			self.Owner:PrintMessage( HUD_PRINTCENTER, "Switched to semi-automatic fire mode.")
+			self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Switched to semi-automatic fire mode.")
 
 		end
 
@@ -218,10 +218,10 @@ function SWEP:PrimaryAttack( partofburst )
 	-- Remove 1 bullet from our clip
 	self:TakePrimaryAmmo(1)
 
-	if ( self.Owner:IsNPC() ) then return end
+	if ( self:GetOwner():IsNPC() ) then return end
 
 	-- Punch the player's view
-	self.Owner:ViewPunch(Angle(math.Rand(-0.2,-0.1) * self.Primary.Recoil, math.Rand(-0.1,0.1) *self.Primary.Recoil, 0))
+	self:GetOwner():ViewPunch(Angle(math.Rand(-0.2,-0.1) * self.Primary.Recoil, math.Rand(-0.1,0.1) *self.Primary.Recoil, 0))
 
 	self.LastPrimaryAttack = CurTime()
 end
@@ -231,31 +231,31 @@ Name: SWEP:PrimaryAttack()
 Desc: +attack1 has been pressed
 ---------------------------------------------------------*/
 function SWEP:CSShootBullet(dmg, recoil, numbul, cone)
-	if not IsValid(self.Owner) then return end
+	if not IsValid(self:GetOwner()) then return end
 	numbul = numbul or 1
 	cone = cone or 0.01
 
 	local bullet = {}
 	bullet.Num = numbul or 1
-	bullet.Src = self.Owner:GetShootPos()       -- Source
-	bullet.Dir = self.Owner:GetAimVector()      -- Dir of bullet
+	bullet.Src = self:GetOwner():GetShootPos()       -- Source
+	bullet.Dir = self:GetOwner():GetAimVector()      -- Dir of bullet
 	bullet.Spread = Vector(cone, cone, 0)     -- Aim Cone
 	bullet.Tracer = 4       -- Show a tracer on every x bullets
 	bullet.Force = 5        -- Amount of force to give to phys objects
 	bullet.Damage = dmg
 
-	self.Owner:FireBullets(bullet)
+	self:GetOwner():FireBullets(bullet)
 	self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)      -- View model animation
-	self.Owner:MuzzleFlash()        -- Crappy muzzle light
-	self.Owner:SetAnimation(PLAYER_ATTACK1)       -- 3rd Person Animation
+	self:GetOwner():MuzzleFlash()        -- Crappy muzzle light
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)       -- 3rd Person Animation
 
-	if ( self.Owner:IsNPC() ) then return end
+	if ( self:GetOwner():IsNPC() ) then return end
 
 	// CUSTOM RECOIL !
 	if ( (game.SinglePlayer() and SERVER) or ( !game.SinglePlayer() and CLIENT and IsFirstTimePredicted() ) ) then
-		local eyeang = self.Owner:EyeAngles()
+		local eyeang = self:GetOwner():EyeAngles()
 		eyeang.pitch = eyeang.pitch - recoil
-		self.Owner:SetEyeAngles( eyeang )
+		self:GetOwner():SetEyeAngles( eyeang )
 	end
 end
 
@@ -372,20 +372,20 @@ SetIronsights
 
 function SWEP:SetIronsights(b)
 	if game.SinglePlayer() then -- Make ironsights work on SP
-		self.Owner:SendLua("LocalPlayer():GetActiveWeapon().Ironsights = "..tostring(b))
+		self:GetOwner():SendLua("LocalPlayer():GetActiveWeapon().Ironsights = "..tostring(b))
 	end
 	self.Ironsights = b
 	if b then
 		self:NewSetWeaponHoldType(self.HoldType)
 		self.CurHoldType = self.HoldType
 		if SERVER then
-			hook.Call("UpdatePlayerSpeed", GAMEMODE, self.Owner)
+			hook.Call("UpdatePlayerSpeed", GAMEMODE, self:GetOwner())
 		end
 	else
 		self:NewSetWeaponHoldType("normal")
 		self.CurHoldType = "normal"
 		if SERVER then
-			hook.Call("UpdatePlayerSpeed", GAMEMODE, self.Owner)
+			hook.Call("UpdatePlayerSpeed", GAMEMODE, self:GetOwner())
 		end
 	end
 end
@@ -459,9 +459,9 @@ end
 
 if CLIENT then
 	function SWEP:ViewModelDrawn()
-		if not IsValid(self.Owner) then return end
-		local vm = self.Owner:GetViewModel()
-		
+		if not IsValid(self:GetOwner()) then return end
+		local vm = self:GetOwner():GetViewModel()
+
 		if self.ViewModelBoneManipulations then
 			self:UpdateBones(vm, self.ViewModelBoneManipulations)
 		else
@@ -476,21 +476,21 @@ if CLIENT then
 		local bones = {}
 		for i = 0, vm:GetBoneCount() - 1 do
 			local bonename = vm:GetBoneName(i)
-			if manipulations[bonename] then 
+			if manipulations[bonename] then
 				bones[bonename] = manipulations[bonename]
 			else
-				bones[bonename] = { 
+				bones[bonename] = {
 					scale = Vector(1,1,1),
 					pos = Vector(0,0,0),
 					angle = Angle(0,0,0)
 				}
 			end
 		end
-			
+
 		for k, v in pairs(bones) do
 			local bone = vm:LookupBone(k)
 			if not bone then continue end
-				
+
 			-- Bone scaling seems to be buggy. Workaround.
 			local scale = Vector(v.scale.x, v.scale.y, v.scale.z)
 			local ms = Vector(1,1,1)
@@ -501,7 +501,7 @@ if CLIENT then
 				cur = vm:GetBoneParent(cur)
 			end
 			scale = scale * ms
-				
+
 			if vm:GetManipulateBoneScale(bone) != scale then
 				vm:ManipulateBoneScale(bone, scale)
 			end
@@ -511,10 +511,10 @@ if CLIENT then
 			if vm:GetManipulateBoneAngles(bone) != v.angle then
 				vm:ManipulateBoneAngles(bone, v.angle)
 			end
-		end 
+		end
 	end
-	
-	function SWEP:ResetBones(vm)	
+
+	function SWEP:ResetBones(vm)
 		if not IsValid(vm) or not vm:GetBoneCount() then return end
 		for i = 0, vm:GetBoneCount() - 1 do
 			vm:ManipulateBoneScale(i, Vector(1, 1, 1))

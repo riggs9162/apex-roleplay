@@ -18,7 +18,7 @@ end
 
 if CLIENT then
 
-	SWEP.PrintName = "SMG 3"
+	SWEP.PrintName = "P90"
 
 	SWEP.Slot = 2
 
@@ -48,7 +48,7 @@ SWEP.Category = "Apex Roleplay"
 
 
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 
 
 
@@ -64,11 +64,11 @@ SWEP.HoldType = "smg";
 
 
 
-SWEP.ViewModel = "models/apexwep/weapons/v_smg3.mdl"
+SWEP.ViewModel = "models/weapons/cstrike/c_smg_p90.mdl"
 
-SWEP.WorldModel = "models/apexwep/weapons/w_smg3.mdl"
+SWEP.WorldModel = "models/weapons/w_smg_p90.mdl"
 
-SWEP.ViewModelFOV = 66
+SWEP.ViewModelFOV = 60
 
 
 
@@ -132,7 +132,7 @@ function SWEP:Reload()
 
 	self:SetIronsights( false )
 
-	if ( self:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount( self.Primary.Ammo ) > 0 ) then
+	if ( self:Clip1() < self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) > 0 ) then
 
 		self:DefaultReload( ACT_VM_RELOAD )
 
@@ -152,9 +152,9 @@ function SWEP:ShootBullet(damage, num_bullets, aimcone)
 
 	bullet.Num 	= num_bullets
 
-	bullet.Src 	= self.Owner:GetShootPos() -- Source
+	bullet.Src 	= self:GetOwner():GetShootPos() -- Source
 
-	bullet.Dir 	= self.Owner:GetAimVector() -- Dir of bullet
+	bullet.Dir 	= self:GetOwner():GetAimVector() -- Dir of bullet
 
 	bullet.Spread 	= Vector(0.065, 0.065, 0)	 -- Aim Cone
 
@@ -172,7 +172,7 @@ function SWEP:ShootBullet(damage, num_bullets, aimcone)
 
 	self:TakePrimaryAmmo(1)
 
-	self.Owner:FireBullets( bullet )
+	self:GetOwner():FireBullets( bullet )
 
 	self:ShootEffects()
 
@@ -198,7 +198,7 @@ function SWEP:CanPrimaryAttack()
 
 		self:Reload()
 
-		self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
+		self:SetNextPrimaryFire( CurTime() + self:GetOwner():GetViewModel():SequenceDuration() )
 
 		return false
 
@@ -224,13 +224,13 @@ function SWEP:PrimaryAttack()
 
 
 
-	if (self.Owner:Crouching()) then
+	if (self:GetOwner():Crouching()) then
 
-		self.Owner:ViewPunch( Angle( -.5, 0, 0 ) )
+		self:GetOwner():ViewPunch( Angle( -.5, 0, 0 ) )
 
 	else
 
-		self.Owner:ViewPunch( Angle( -.9, 0, 0 ) )
+		self:GetOwner():ViewPunch( Angle( -.9, 0, 0 ) )
 
 	end
 

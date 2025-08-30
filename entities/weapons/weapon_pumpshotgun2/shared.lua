@@ -55,11 +55,11 @@ function SWEP:Reload()
 	if self.Weapon.reloading then return end
 
 	-- Start reloading if we can
-	if (self.Weapon:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount(self.Primary.Ammo) > 0) then
+	if (self.Weapon:Clip1() < self.Primary.ClipSize and self:GetOwner():GetAmmoCount(self.Primary.Ammo) > 0) then
 		self.Weapon.reloading = true
 		self.Weapon:SetVar("reloadtimer", CurTime() + 0.3)
 		self.Weapon:SendWeaponAnim(ACT_VM_RELOAD)
-		self.Owner:SetAnimation(PLAYER_RELOAD)
+		self:GetOwner():SetAnimation(PLAYER_RELOAD)
 	end
 end
 
@@ -67,7 +67,7 @@ function SWEP:Think()
 	if self.Weapon.reloading then
 		if (self.Weapon:GetVar("reloadtimer", 0) < CurTime()) then
 			-- Finsished reload -
-			if (self.Weapon:Clip1() >= self.Primary.ClipSize or self.Owner:GetAmmoCount(self.Primary.Ammo) <= 0) then
+			if (self.Weapon:Clip1() >= self.Primary.ClipSize or self:GetOwner():GetAmmoCount(self.Primary.Ammo) <= 0) then
 				self.Weapon.reloading = false
 				return
 			end
@@ -88,11 +88,11 @@ function SWEP:Think()
 			self.Weapon:SendWeaponAnim(ACT_VM_RELOAD)
 
 			-- Add ammo
-			self.Owner:RemoveAmmo(1, self.Primary.Ammo, false)
+			self:GetOwner():RemoveAmmo(1, self.Primary.Ammo, false)
 			self.Weapon:SetClip1(self.Weapon:Clip1() + 1)
 
 			-- Finish filling, final pump
-			if (self.Weapon:Clip1() >= self.Primary.ClipSize or self.Owner:GetAmmoCount(self.Primary.Ammo) <= 0) then
+			if (self.Weapon:Clip1() >= self.Primary.ClipSize or self:GetOwner():GetAmmoCount(self.Primary.Ammo) <= 0) then
 				self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_FINISH)
 			end
 		end

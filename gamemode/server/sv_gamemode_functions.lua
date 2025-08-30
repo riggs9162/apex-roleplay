@@ -160,13 +160,13 @@ function GM:PlayerSpawnProp(client, model)
 end
 
 function GM:PlayerSpawnSENT(client, model)
-	if GAMEMODE.Config.adminsents then
-		if client:EntIndex() != 0 and not client:IsAdmin() then
-			GAMEMODE:Notify(client, 1, 2, apex.language.GetPhrase("need_admin", "gm_spawnsent"))
-			return
-		end
+	if self.BaseClass:PlayerSpawnSENT(client, model) and client:IsAdmin() then
+		return true
 	end
-	return self.BaseClass:PlayerSpawnSENT(client, model) and not client:IsArrested()
+
+	GAMEMODE:Notify(client, 1, 2, apex.language.GetPhrase("need_admin", "gm_spawnsent"))
+
+	return false
 end
 
 local function canSpawnWeapon(client, class)
@@ -197,7 +197,7 @@ return client:IsSuperAdmin()
 end
 
 if string.match( model, "chair" ) or string.match( model, "seat" ) or string.match( model, "pod" ) then
-return client:IsAdmin() or client:GetNWString("usergroup") == "vip" 
+return client:IsAdmin() or client:GetNWString("usergroup") == "vip"
 end
 	--return self.BaseClass:PlayerSpawnVehicle(client, model) and not client:IsArrested()
 end

@@ -18,7 +18,7 @@ SWEP.Contact = ""
 SWEP.Purpose = ""
 SWEP.IconLetter = ""
 
-SWEP.ViewModelFOV = 62
+SWEP.ViewModelFOV = 60
 SWEP.ViewModelFlip = false
 SWEP.AnimPrefix = "stunstick"
 
@@ -80,7 +80,7 @@ function SWEP:PrimaryAttack()
 	self:NewSetWeaponHoldType("melee")
 	timer.Simple(0.3, function() if self:IsValid() then self:NewSetWeaponHoldType("normal") end end)
 
-	self.Owner:SetAnimation(PLAYER_ATTACK1)
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
 	self.Weapon:EmitSound(self.Sound)
 	self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
 
@@ -88,23 +88,23 @@ function SWEP:PrimaryAttack()
 
 	if CLIENT then return end
 
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 
-	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or (self.Owner:EyePos():Distance(trace.Entity:GetPos()) > 115) or not trace.Entity:GetDarkRPVar("Arrested") then
+	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or (self:GetOwner():EyePos():Distance(trace.Entity:GetPos()) > 115) or not trace.Entity:GetDarkRPVar("Arrested") then
 		return
 	end
 
-	trace.Entity:unArrest(self.Owner)
-	GAMEMODE:Notify(trace.Entity, 0, 4, "You were unarrested by " .. self.Owner:Nick())
+	trace.Entity:unArrest(self:GetOwner())
+	GAMEMODE:Notify(trace.Entity, 0, 4, "You were unarrested by " .. self:GetOwner():Nick())
 
-	if self.Owner.SteamName then
-		apex.db.Log(self.Owner:Nick().." ("..self.Owner:SteamID64()..") unarrested "..trace.Entity:Nick(), nil, Color(0, 255, 255))
+	if self:GetOwner().SteamName then
+		apex.db.Log(self:GetOwner():Nick().." ("..self:GetOwner():SteamID64()..") unarrested "..trace.Entity:Nick(), nil, Color(0, 255, 255))
 	end
 end
 
 function SWEP:SecondaryAttack()
 	if CLIENT then return end
-	if self.Owner:HasWeapon("arrest_stick") then
-		self.Owner:SelectWeapon("arrest_stick")
+	if self:GetOwner():HasWeapon("arrest_stick") then
+		self:GetOwner():SelectWeapon("arrest_stick")
 	end
 end

@@ -40,5 +40,5 @@ hook.Add("PlayerSpawnSWEP", "FAdmin_RestrictWeapons", RestrictWeapons)
 FAdmin.StartHooks["Restrict"] = function()
 	FAdmin.Commands.AddCommand("RestrictWeapon", DoRestrictWeapons)
 
-	FAdmin.Access.AddPrivilege("Restrict", 3)
+	FAdmin.Access.AddPrivilege("Restrict", 2)
 end

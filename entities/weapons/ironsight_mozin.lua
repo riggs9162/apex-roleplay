@@ -30,7 +30,7 @@ SWEP.Base = "weapon_base"
 SWEP.Spawnable = true
 SWEP.AdminSpawnable = true
 SWEP.HoldType = "ar2"
-SWEP.ViewModelFOV = 70
+SWEP.ViewModelFOV = 60
 SWEP.ViewModelFlip = false
 SWEP.UseHands = true
 SWEP.ViewModel = "models/apexwep/weapons/v_mosin_sniper.mdl"
@@ -69,7 +69,7 @@ end
 
 function SWEP:Reload()
 	self:SetIronsights( false )
-	if ( self:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount( self.Primary.Ammo ) > 0 ) then
+	if ( self:Clip1() < self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) > 0 ) then
 		self:DefaultReload( ACT_VM_RELOAD )
 	end
 end
@@ -77,15 +77,15 @@ end
 function SWEP:ShootBullet(damage, num_bullets, aimcone)
 	local bullet = {}
 	bullet.Num 	= num_bullets
-	bullet.Src 	= self.Owner:GetShootPos() -- Source
-	bullet.Dir 	= self.Owner:GetAimVector() -- Dir of bullet
+	bullet.Src 	= self:GetOwner():GetShootPos() -- Source
+	bullet.Dir 	= self:GetOwner():GetAimVector() -- Dir of bullet
 	bullet.Spread 	= Vector(aimcone, aimcone, 0)	 -- Aim Cone
 	bullet.Tracer	= 1 -- Show a tracer on every x bullets
 	bullet.TracerName = "Tracer"
 	bullet.Force	= 1 -- Amount of force to give to phys objects
 	bullet.Damage	= damage
 	bullet.AmmoType = "357"
-	self.Owner:FireBullets( bullet )
+	self:GetOwner():FireBullets( bullet )
 	self:ShootEffects()
 end
 
@@ -97,7 +97,7 @@ function SWEP:CanPrimaryAttack()
 		self:EmitSound( "Weapon_Pistol.Empty" )
 		self:SetIronsights( false )
 		self:Reload()
-		self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
+		self:SetNextPrimaryFire( CurTime() + self:GetOwner():GetViewModel():SequenceDuration() )
 		return false
 	end
 	return true
@@ -108,10 +108,10 @@ function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire(CurTime() + .5)
 	self:ShootBullet(99, 1, .01)
 	self:EmitSound( "Weapon_AWP.Single" )
-	if (self.Owner:Crouching()) then
-		self.Owner:ViewPunch( Angle(-5, 0, 0 ) )
+	if (self:GetOwner():Crouching()) then
+		self:GetOwner():ViewPunch( Angle(-5, 0, 0 ) )
 	else
-		self.Owner:ViewPunch( Angle( -10, 0, 0 ) )
+		self:GetOwner():ViewPunch( Angle( -10, 0, 0 ) )
 	end
 	self:TakePrimaryAmmo(1)
 end

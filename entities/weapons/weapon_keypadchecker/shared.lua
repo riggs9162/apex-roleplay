@@ -131,24 +131,24 @@ end
 Send the info to the client
 ---------------------------------------------------------------------------*/
 function SWEP:PrimaryAttack()
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 	local ent, class = trace.Entity, trace.Entity:GetClass()
 	local data
 
 	if class == "sent_keypad" then
 		data = get_sent_keypad_Info(ent)
-		GAMEMODE:Notify(self.Owner, 1, 4, "This keypad controls "..#data / 2 .. " entities")
+		GAMEMODE:Notify(self:GetOwner(), 1, 4, "This keypad controls "..#data / 2 .. " entities")
 	elseif class == "keypad" then
 		data = get_keypad_Info(ent)
-		GAMEMODE:Notify(self.Owner, 1, 4, "This keypad controls "..#data / 2 .. " entities")
+		GAMEMODE:Notify(self:GetOwner(), 1, 4, "This keypad controls "..#data / 2 .. " entities")
 	else
 		data = getEntityKeypad(ent)
-		GAMEMODE:Notify(self.Owner, 1, 4, "This entity is controlled by "..#data .. " keypads")
+		GAMEMODE:Notify(self:GetOwner(), 1, 4, "This entity is controlled by "..#data .. " keypads")
 	end
 
 	net.Start("DarkRP_keypadData")
 		net.WriteTable(data)
-	net.Send(self.Owner)
+	net.Send(self:GetOwner())
 end
 
 function SWEP:SecondaryAttack()

@@ -542,45 +542,6 @@ local function ccSetSalary(client, cmd, args)
 end
 concommand.Add("apex_set_salary", ccSetSalary)
 
-local function ccSENTSPawn(client, cmd, args)
-	if GAMEMODE.Config.adminsents then
-		if client:EntIndex() != 0 and not client:IsAdmin() then
-			GAMEMODE:Notify(client, 1, 2, apex.language.GetPhrase("need_admin", "gm_spawnsent"))
-			return
-		end
-	end
-	Spawn_SENT(client, args[1])
-	apex.db.Log(client:Nick().." ("..client:SteamID64()..") spawned SENT "..args[1], nil, Color(255, 255, 0))
-end
-concommand.Add("gm_spawnsent", ccSENTSPawn)
-
-local function ccVehicleSpawn(client, cmd, args)
-	if GAMEMODE.Config.adminvehicles then
-		if client:GetNWString("usergroup") == "vip" and (string.match( string.lower(args[1]), "seat" ) or string.match( string.lower(args[1]), "chair" )) then
-		--	Spawn_Vehicle(client, args[1])
-		--	apex.db.Log(client:Nick().." ("..client:SteamID64()..") spawned Vehicle "..args[1], nil, Color(255, 255, 0))
-		elseif client:EntIndex() != 0 and not client:IsAdmin() then
-			client:Notify("You are not allowed to spawn this vehicle.")
-			return false
-		end
-	end
-	Spawn_Vehicle(client, args[1])
-	apex.db.Log(client:Nick().." ("..client:SteamID64()..") spawned Vehicle "..args[1], nil, Color(255, 255, 0))
-end
-concommand.Add("gm_spawnvehicle", ccVehicleSpawn)
-
-local function ccNPCSpawn(client, cmd, args)
-	if GAMEMODE.Config.adminnpcs then
-		if client:EntIndex() != 0 and not client:IsAdmin() then
-			GAMEMODE:Notify(client, 1, 2, apex.language.GetPhrase("need_admin", "gm_spawnnpc"))
-			return
-		end
-	end
-	Spawn_NPC(client, args[1])
-	apex.db.Log(client:Nick().." ("..client:SteamID64()..") spawned NPC "..args[1], nil, Color(255, 255, 0))
-end
-concommand.Add("gm_spawnnpc", ccNPCSpawn)
-
 local function ccSetRPName(client, cmd, args)
 	if not args[1] then return end
 	if client:EntIndex() != 0 and not client:IsAdmin() then

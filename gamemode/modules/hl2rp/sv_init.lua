@@ -93,7 +93,7 @@ concommand.Add("event_citadel_start", function(client)
 	for _, v in player.Iterator() do
 		v:ConCommand("play wind_light02_loop.wav")
 		v:ConCommand("play ol01_portalblast.wav")
-		v:ScreenFade(SCREENFADE.IN, color_white, 3, 0)
+		v:ScreenFade(SCREENFADE.IN, Color(255, 255, 255), 3, 0)
 
 		timer.Create("GroundShakeTime", 10, 0, function()
 			util.ScreenShake(vector_origin, 5, 5, 10, 5000)
@@ -125,7 +125,7 @@ concommand.Add("event_portal_start", function(client)
 
 	for _, v in player.Iterator() do
 		v:ConCommand( "play ol01_portalblast.wav" )
-		v:ScreenFade(SCREENFADE.IN, color_white, 3, 0)
+		v:ScreenFade(SCREENFADE.IN, Color(255, 255, 255), 3, 0)
 
 		timer.Simple(10, function()
 			v:ConCommand("play ol01portal_loop_stage01.wav")
@@ -196,7 +196,7 @@ concommand.Add("event_citadel_stop", function(client)
 
 	for _, v in player.Iterator() do
 		v:ConCommand("play ol12a_portalclose.wav")
-		v:ScreenFade(SCREENFADE.IN, color_white, 3, 0)
+		v:ScreenFade(SCREENFADE.IN, Color(255, 255, 255), 3, 0)
 		timer.Remove("GroundShakeTime")
 	end
 end)
@@ -212,7 +212,7 @@ concommand.Add("event_portal_stop", function(client)
 
 	for _, v in player.Iterator() do
 		v:ConCommand("play ol12a_portalclose.wav")
-		v:ScreenFade(SCREENFADE.IN, color_white, 3, 0)
+		v:ScreenFade(SCREENFADE.IN, Color(255, 255, 255), 3, 0)
 		timer.Remove("GroundShakeTime2")
 		timer.Remove("PortalMovey")
 	end
@@ -484,18 +484,18 @@ end
 
 apex.commands.Register("/garagedoor", garageDoor, 20)
 
-local rewardAllowedDivisions = {
-	[DIVISION_CMD] = true, -- CmD
-	[DIVISION_SEC] = true -- SeC
-}
-
-local rewardAllowedRanks = {
-	[RANK_DVL] = true -- DvL
-}
-
 local function playerReward(client)
 	if client.CMDCD and client.CMDCD > CurTime() then return end
 	client.CMDCD = CurTime() + 300
+
+	local rewardAllowedDivisions = {
+		[DIVISION_CMD] = true, -- CmD
+		[DIVISION_SEC] = true -- SeC
+	}
+
+	local rewardAllowedRanks = {
+		[RANK_DVL] = true -- DvL
+	}
 
 	if ( client:IsCombine() ) then
 		local rank = client:GetDarkRPVar("rank")

@@ -20,7 +20,7 @@ SWEP.Purpose = ""
 
 SWEP.IconLetter = ""
 
-SWEP.ViewModelFOV = 62
+SWEP.ViewModelFOV = 60
 SWEP.ViewModelFlip = false
 SWEP.ViewModel = Model("models/weapons/v_rpg.mdl")
 SWEP.WorldModel = Model("models/weapons/w_rocket_launcher.mdl")
@@ -63,8 +63,8 @@ end
 function SWEP:Holster()
 	if not self.Ready or not SERVER then return true end
 	self.Ironsights = false
-	hook.Call("UpdatePlayerSpeed", GAMEMODE, self.Owner)
-	self.Owner:SetJumpPower(200)
+	hook.Call("UpdatePlayerSpeed", GAMEMODE, self:GetOwner())
+	self:GetOwner():SetJumpPower(200)
 
 	return true
 end
@@ -78,7 +78,7 @@ function SWEP:PrimaryAttack()
 
 	if not self.Ready then return end
 
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 
 	self.Weapon:SetNextPrimaryFire(CurTime() + 2.5)
 	if (not IsValid(trace.Entity) or (not trace.Entity:IsDoor() and not trace.Entity:GetClass() == "func_door" and not trace.Entity:IsVehicle() and trace.Entity:GetClass() != "prop_physics")) then
@@ -89,12 +89,12 @@ function SWEP:PrimaryAttack()
 		return
 	end
 
-	if trace.Entity:IsDoor() and (self.Owner:EyePos():Distance(trace.HitPos) > 45 or
+	if trace.Entity:IsDoor() and (self:GetOwner():EyePos():Distance(trace.HitPos) > 45 or
 		(not GAMEMODE.Config.canforcedooropen and trace.Entity.DoorData.NonOwnable)) then
 		return
 	end
 
-	if (trace.Entity:IsVehicle() and self.Owner:EyePos():Distance(trace.HitPos) > 100) then
+	if (trace.Entity:IsVehicle() and self:GetOwner():EyePos():Distance(trace.HitPos) > 100) then
 		return
 	end
 
@@ -109,9 +109,9 @@ function SWEP:PrimaryAttack()
 	end
 	if (trace.Entity:IsDoor()) then
 		local allowed = false
-		local team = self.Owner:Team()
+		local team = self:GetOwner():Team()
 		-- if we need a warrant to get in
-		if GAMEMODE.Config.doorwarrants and trace.Entity:IsOwned() and not trace.Entity:OwnedBy(self.Owner) then
+		if GAMEMODE.Config.doorwarrants and trace.Entity:IsOwned() and not trace.Entity:OwnedBy(self:GetOwner()) then
 			-- if anyone who owns this door has a warrant for their arrest
 			-- allow the police to smash the door in
 			for k, v in player.Iterator() do
@@ -140,17 +140,17 @@ function SWEP:PrimaryAttack()
 				return
 			end
  local ran =math.random(1,10)
-              -- self.Owner:ChatPrint(ran)
-if ran > 3 then 
+              -- self:GetOwner():ChatPrint(ran)
+if ran > 3 then
 trace.Entity:EmitSound('physics/wood/wood_box_impact_hard3.wav')
-return self.Owner:Notify('Your attempt to ram this door failed.') 
+return self:GetOwner():Notify('Your attempt to ram this door failed.')
 end
 			trace.Entity:KeysUnLock()
 			trace.Entity:Fire("open", "", .6)
 			trace.Entity:Fire("setanimation", "open", .6)
                         trace.Entity:EmitSound('physics/wood/wood_crate_break3.wav')
 		else
-			GAMEMODE:Notify(self.Owner, 1, 5, "You need a warrant in order to be able to unlock this door.")
+			GAMEMODE:Notify(self:GetOwner(), 1, 5, "You need a warrant in order to be able to unlock this door.")
 			return
 		end
 	elseif (trace.Entity:IsVehicle()) then
@@ -159,9 +159,9 @@ end
 			driver:ExitVehicle()
 		end
 		trace.Entity:KeysLock()
-	elseif trace.Entity.isFadingDoor and self.Owner:EyePos():Distance(trace.HitPos) < 100 then
+	elseif trace.Entity.isFadingDoor and self:GetOwner():EyePos():Distance(trace.HitPos) < 100 then
 		if not c then
-			GAMEMODE:Notify(self.Owner, 1, 5,"You need a warrant in order to be able to open the fading door.")
+			GAMEMODE:Notify(self:GetOwner(), 1, 5,"You need a warrant in order to be able to open the fading door.")
 			return
 		end
 
@@ -169,26 +169,26 @@ end
 			trace.Entity:fadeActivate()
 			timer.Simple(5, function() if trace.Entity.fadeActive then trace.Entity:fadeDeactivate() end end)
 		end
-	elseif a and b and not trace.Entity:GetPhysicsObject():IsMoveable() and self.Owner:EyePos():Distance(trace.HitPos) < 100 then
+	elseif a and b and not trace.Entity:GetPhysicsObject():IsMoveable() and self:GetOwner():EyePos():Distance(trace.HitPos) < 100 then
 		if not c then
-			GAMEMODE:Notify(self.Owner, 1, 5, "You need a warrant in order to be able to unfreeze this prop")
+			GAMEMODE:Notify(self:GetOwner(), 1, 5, "You need a warrant in order to be able to unfreeze this prop")
 			return
 		end
 
 		trace.Entity:GetPhysicsObject():EnableMotion(true)
 	end
-	if d and b and self.Owner:EyePos():Distance(trace.HitPos) < 100 then
+	if d and b and self:GetOwner():EyePos():Distance(trace.HitPos) < 100 then
 		if not c then
-			GAMEMODE:Notify(self.Owner, 1, 5,"You need a warrant in order to be able to unweld this prop.")
+			GAMEMODE:Notify(self:GetOwner(), 1, 5,"You need a warrant in order to be able to unweld this prop.")
 			return
 		end
 
 		constraint.RemoveConstraints(trace.Entity, "Weld")
 	end
 
-	self.Owner:SetAnimation(PLAYER_ATTACK1)
-	self.Owner:EmitSound(self.Sound)
-	self.Owner:ViewPunch(Angle(-10, math.random(-5, 5), 0))
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+	self:GetOwner():EmitSound(self.Sound)
+	self:GetOwner():ViewPunch(Angle(-10, math.random(-5, 5), 0))
 end
 
 function SWEP:SecondaryAttack()
@@ -199,14 +199,14 @@ function SWEP:SecondaryAttack()
 		self:SetWeaponHoldType("rpg")
 		if SERVER then
 			-- Prevent them from being able to run and jump
-			hook.Call("UpdatePlayerSpeed", GAMEMODE, self.Owner)
-			self.Owner:SetJumpPower(0)
+			hook.Call("UpdatePlayerSpeed", GAMEMODE, self:GetOwner())
+			self:GetOwner():SetJumpPower(0)
 		end
 	else
 		self:SetWeaponHoldType("normal")
 		if SERVER then
-			hook.Call("UpdatePlayerSpeed", GAMEMODE, self.Owner)
-			self.Owner:SetJumpPower(200)
+			hook.Call("UpdatePlayerSpeed", GAMEMODE, self:GetOwner())
+			self:GetOwner():SetJumpPower(200)
 		end
 	end
 end

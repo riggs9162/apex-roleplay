@@ -10,8 +10,8 @@ hook.Add("HUDPaint", "apex.mapconfig.viewbuttons", function()
         if ( ent:MapCreationID() > 0 ) then
             local pos = ent:GetPos()
             local screenPos = pos:ToScreen()
-            draw.SimpleTextOutlined(tostring(ent), "DermaDefault", screenPos.x, screenPos.y - 5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
-            draw.SimpleTextOutlined(ent:MapCreationID(), "DermaDefault", screenPos.x, screenPos.y + 5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+            draw.SimpleTextOutlined(tostring(ent), "DermaDefault", screenPos.x, screenPos.y - 5, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, Color(0, 0, 0))
+            draw.SimpleTextOutlined(ent:MapCreationID(), "DermaDefault", screenPos.x, screenPos.y + 5, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, Color(0, 0, 0))
         end
     end
 end)

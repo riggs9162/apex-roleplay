@@ -34,7 +34,7 @@ SWEP.AdminSpawnable = true
 
 SWEP.ViewModel = "models/weapons/c_shotgun.mdl"
 SWEP.WorldModel = "models/weapons/w_shotgun.mdl"
-SWEP.ViewModelFOV = 66
+SWEP.ViewModelFOV = 60
 
 SWEP.Primary.ClipSize = 6
 SWEP.Primary.DefaultClip = 7
@@ -77,29 +77,29 @@ end
 function SWEP:ShootBullet(damage, num_bullets, aimcone)
 	local bullet = {}
 	bullet.Num 	= num_bullets
-	bullet.Src 	= self.Owner:GetShootPos() -- Source
-	bullet.Dir 	= self.Owner:GetAimVector() -- Dir of bullet
+	bullet.Src 	= self:GetOwner():GetShootPos() -- Source
+	bullet.Dir 	= self:GetOwner():GetAimVector() -- Dir of bullet
 	bullet.Spread 	= Vector(aimcone, aimcone, 0)	 -- Aim Cone
 	bullet.Tracer	= 1 -- Show a tracer on every x bullets
 	bullet.Force	= 1 -- Amount of force to give to phys objects
 	bullet.Damage	= damage
 	bullet.TracerName = "Tracer"
 	bullet.AmmoType = "shotgun"
-	self.Owner:FireBullets( bullet )
+	self:GetOwner():FireBullets( bullet )
 	self:ShootEffects()
 end
 
 function SWEP:Think()
 
 	if self.dt.reloading and IsFirstTimePredicted() then
-      if self.Owner:KeyDown( IN_ATTACK ) then
+      if self:GetOwner():KeyDown( IN_ATTACK ) then
          self:FinishReload()
          return
       end
 
       if self.reloadtimer <= CurTime() then
 
-         if self.Owner:GetAmmoCount( self.Primary.Ammo ) <= 0 then
+         if self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 then
             self:FinishReload()
          elseif self:Clip1() < self.Primary.ClipSize then
             self:PerformReload()
@@ -123,7 +123,7 @@ function SWEP:StartReload()
 
    self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
 
-   local ply = self.Owner
+   local ply = self:GetOwner()
 
    if not ply or ply:GetAmmoCount( self.Primary.Ammo ) <= 0 then
       return false
@@ -148,7 +148,7 @@ function SWEP:StartReload()
 end
 
 function SWEP:PerformReload()
-   local ply = self.Owner
+   local ply = self:GetOwner()
 
    self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
 
@@ -156,7 +156,7 @@ function SWEP:PerformReload()
 
    if self:Clip1() >= self.Primary.ClipSize then return end
 
-   self.Owner:RemoveAmmo( 1, self.Primary.Ammo, false )
+   self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false )
    self:SetClip1( self:Clip1() + 1 )
 
    self:SendWeaponAnim( ACT_VM_RELOAD )
@@ -176,7 +176,7 @@ function SWEP:CanPrimaryAttack()
 	if ( self:Clip1() <= 0 ) then
 		self:EmitSound( "Weapon_Shotgun.Empty" )
 		self:Reload()
-		self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
+		self:SetNextPrimaryFire( CurTime() + self:GetOwner():GetViewModel():SequenceDuration() )
 		return false
 	end
 	return true
@@ -187,7 +187,7 @@ function SWEP:Reload()
 
    if not IsFirstTimePredicted() then return end
 
-   if self:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount( self.Primary.Ammo ) > 0 then
+   if self:Clip1() < self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) > 0 then
 
       if self:StartReload() then
          return
@@ -200,10 +200,10 @@ function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + .01 )
 	self:ShootBullet( 12.3, 7, .099 )
 	self:EmitSound( "Weapon_Shotgun.Single" )
-	if (self.Owner:Crouching()) then
-		self.Owner:ViewPunch( Angle(-.5, 0, 0 ) )
+	if (self:GetOwner():Crouching()) then
+		self:GetOwner():ViewPunch( Angle(-.5, 0, 0 ) )
 	else
-		self.Owner:ViewPunch( Angle( -1, 0, 0 ) )
+		self:GetOwner():ViewPunch( Angle( -1, 0, 0 ) )
 	end
 
 
@@ -211,7 +211,7 @@ function SWEP:PrimaryAttack()
 	pump = true
 
 	self.Weapon:EmitSound(Sound(self.Primary.Sound))
-	self.Owner:ViewPunch(Angle( -self.Primary.Recoil, 0, 0 ))
+	self:GetOwner():ViewPunch(Angle( -self.Primary.Recoil, 0, 0 ))
 	if (self.Primary.TakeAmmoPerBullet) then
 		self:TakePrimaryAmmo(self.Primary.NumShots)
 	else

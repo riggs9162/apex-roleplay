@@ -38,13 +38,13 @@ function SWEP:PrimaryAttack()
 
 	local found
 	local lastDot = -1 -- the opposite of what you're looking at
-	local aimVec = self.Owner:GetAimVector()
+	local aimVec = self:GetOwner():GetAimVector()
 
 	for k,v in player.Iterator() do
 		local maxhealth = v.StartHealth or 100
-		if v == self.Owner or v:GetShootPos():Distance(self.Owner:GetShootPos()) > 85 or v:Health() >= maxhealth then continue end
+		if v == self:GetOwner() or v:GetShootPos():Distance(self:GetOwner():GetShootPos()) > 85 or v:Health() >= maxhealth then continue end
 
-		local direction = v:GetShootPos() - self.Owner:GetShootPos()
+		local direction = v:GetShootPos() - self:GetOwner():GetShootPos()
 		direction:Normalize()
 		local dot = direction:Dot(aimVec)
 
@@ -57,16 +57,16 @@ function SWEP:PrimaryAttack()
 
 	if found then
 		found:SetHealth(found:Health() + 1)
-		self.Owner:EmitSound("hl1/fvox/boop.wav", 150, found:Health())
+		self:GetOwner():EmitSound("hl1/fvox/boop.wav", 150, found:Health())
 	end
 end
 
 function SWEP:SecondaryAttack()
 	self.Weapon:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
-	local maxhealth = self.Owner.StartHealth or 100
-	if self.Owner:Health() < maxhealth and SERVER then
-		self.Owner:SetHealth(self.Owner:Health() + 1)
-		self.Owner:EmitSound("hl1/fvox/boop.wav", 150, self.Owner:Health())
+	local maxhealth = self:GetOwner().StartHealth or 100
+	if self:GetOwner():Health() < maxhealth and SERVER then
+		self:GetOwner():SetHealth(self:GetOwner():Health() + 1)
+		self:GetOwner():EmitSound("hl1/fvox/boop.wav", 150, self:GetOwner():Health())
 	end
 end
 

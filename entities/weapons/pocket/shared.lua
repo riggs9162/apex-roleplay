@@ -48,8 +48,8 @@ end
 function SWEP:Deploy()
 	if not SERVER then return end
 	--self:SetWeaponHoldType("normal")
-	self.Owner:DrawViewModel(false)
-	self.Owner:DrawWorldModel(false)
+	self:GetOwner():DrawViewModel(false)
+	self:GetOwner():DrawWorldModel(false)
 end
 
 function SWEP:PreDrawViewModel()
@@ -59,13 +59,13 @@ end
 function SWEP:Equip(newOwner)
 	if not SERVER then return end
 
-	local t = self.Owner:Team()
+	local t = self:GetOwner():Team()
 	self.MaxPocketItems = RPExtraTeams[t] and RPExtraTeams[t].maxpocket or GAMEMODE.Config.pocketitems
 
-	local i = self.Owner.Pocket and #self.Owner.Pocket or 0
+	local i = self:GetOwner().Pocket and #self:GetOwner().Pocket or 0
 	while i > self.MaxPocketItems do
-		self.Owner:DropPocketItem(self.Owner.Pocket[i])
-		self.Owner.Pocket[i] = nil
+		self:GetOwner():DropPocketItem(self:GetOwner().Pocket[i])
+		self:GetOwner().Pocket[i] = nil
 		i = i - 1
 	end
 end
@@ -74,13 +74,13 @@ local blacklist = {"fadmin_jail", "drug_lab", "money_printer", "meteor", "microw
 function SWEP:PrimaryAttack()
 
 	self.Weapon:SetNextPrimaryFire(CurTime() + 0.2)
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 
 	if not IsValid(trace.Entity) or (SERVER and trace.Entity:IsPlayerHolding()) then
 		return
 	end
 
-	if self.Owner:EyePos():Distance(trace.HitPos) > 150 then
+	if self:GetOwner():EyePos():Distance(trace.HitPos) > 150 then
 		return
 	end
 
@@ -91,34 +91,34 @@ function SWEP:PrimaryAttack()
 	if not phys:IsValid() then return end
 	local mass = trace.Entity.RPOriginalMass and trace.Entity.RPOriginalMass or phys:GetMass()
 
-	self.Owner:GetTable().Pocket = self.Owner:GetTable().Pocket or {}
-	if not trace.Entity:CPPICanPickup(self.Owner) or trace.Entity.IsPocketed or trace.Entity.jailWall then
-		self.Owner:Notify("You can not put this in your pocket!")
+	self:GetOwner():GetTable().Pocket = self:GetOwner():GetTable().Pocket or {}
+	if not trace.Entity:CPPICanPickup(self:GetOwner()) or trace.Entity.IsPocketed or trace.Entity.jailWall then
+		self:GetOwner():Notify("You can not put this in your pocket!")
 		return
 	end
 	for k,v in pairs(blacklist) do
 		if string.find(string.lower(trace.Entity:GetClass()), v) then
-			self.Owner:Notify( "You can not put this in your pocket!")
+			self:GetOwner():Notify( "You can not put this in your pocket!")
 			return
 		end
 	end
 
 	if mass > 100 then
-		self.Owner:Notify( "This object is too heavy.")
+		self:GetOwner():Notify( "This object is too heavy.")
 		return
 	end
 
-	if #self.Owner:GetTable().Pocket >= self.MaxPocketItems then
-		self.Owner:Notify( "Your pocket is full!")
+	if #self:GetOwner():GetTable().Pocket >= self.MaxPocketItems then
+		self:GetOwner():Notify( "Your pocket is full!")
 		return
 	end
 
 
-	umsg.Start("Pocket_AddItem", self.Owner)
+	umsg.Start("Pocket_AddItem", self:GetOwner())
 		umsg.Short(trace.Entity:EntIndex())
 	umsg.End()
 
-	table.insert(self.Owner:GetTable().Pocket, trace.Entity)
+	table.insert(self:GetOwner():GetTable().Pocket, trace.Entity)
 	trace.Entity:SetNoDraw(true)
 	trace.Entity:SetPos(trace.Entity:GetPos())
 	local phys = trace.Entity:GetPhysicsObject()
@@ -136,18 +136,18 @@ function SWEP:SecondaryAttack()
 
 	if CLIENT then return end
 
-	if not self.Owner:GetTable().Pocket or #self.Owner:GetTable().Pocket <= 0 then
-		self.Owner:Notify( "Your pocket contains no items.")
+	if not self:GetOwner():GetTable().Pocket or #self:GetOwner():GetTable().Pocket <= 0 then
+		self:GetOwner():Notify( "Your pocket contains no items.")
 		return
 	end
 
 	timer.Simple(0.2, function() if self:IsValid() then self:NewSetWeaponHoldType("normal") end end)
 
-	local ent = self.Owner:GetTable().Pocket[#self.Owner:GetTable().Pocket]
-	self.Owner:GetTable().Pocket[#self.Owner:GetTable().Pocket] = nil
-	if not IsValid(ent) then self.Owner:Notify( "Your pocket contains no items.") return end
+	local ent = self:GetOwner():GetTable().Pocket[#self:GetOwner():GetTable().Pocket]
+	self:GetOwner():GetTable().Pocket[#self:GetOwner():GetTable().Pocket] = nil
+	if not IsValid(ent) then self:GetOwner():Notify( "Your pocket contains no items.") return end
 
-	self.Owner:DropPocketItem(ent)
+	self:GetOwner():DropPocketItem(ent)
 end
 
 SWEP.OnceReload = false
@@ -156,23 +156,23 @@ function SWEP:Reload()
 	self.Weapon.OnceReload = true
 	timer.Simple(0.5, function() if IsValid(self) and IsValid(self.Weapon) then self.Weapon.OnceReload = false end end)
 
-	if not self.Owner:GetTable().Pocket or #self.Owner:GetTable().Pocket <= 0 then
-		self.Owner:Notify( "Your pocket contains no items.")
+	if not self:GetOwner():GetTable().Pocket or #self:GetOwner():GetTable().Pocket <= 0 then
+		self:GetOwner():Notify( "Your pocket contains no items.")
 		return
 	end
 
-	for k,v in pairs(self.Owner:GetTable().Pocket) do
+	for k,v in pairs(self:GetOwner():GetTable().Pocket) do
 		if not IsValid(v) then
-			self.Owner:GetTable().Pocket[k] = nil
-			self.Owner:GetTable().Pocket = table.ClearKeys(self.Owner:GetTable().Pocket)
-			if #self.Owner:GetTable().Pocket <= 0 then -- Recheck after the entities have been validated.
-				self.Owner:Notify( "Your pocket contains no items.")
+			self:GetOwner():GetTable().Pocket[k] = nil
+			self:GetOwner():GetTable().Pocket = table.ClearKeys(self:GetOwner():GetTable().Pocket)
+			if #self:GetOwner():GetTable().Pocket <= 0 then -- Recheck after the entities have been validated.
+				self:GetOwner():Notify( "Your pocket contains no items.")
 				return
 			end
 		end
 	end
 
-	umsg.Start("StartPocketMenu", self.Owner)
+	umsg.Start("StartPocketMenu", self:GetOwner())
 	umsg.End()
 end
 

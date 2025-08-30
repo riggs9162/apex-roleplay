@@ -21,7 +21,7 @@ function PANEL:Init()
 	self:SetContentAlignment(5)
 	self:SetExpensiveShadow(1, color_shadow)
 	self:SetFont("apex.notify")
-	self:SetTextColor(color_white)
+	self:SetTextColor(Color(255, 255, 255))
 end
 
 function PANEL:Paint(width, height)
@@ -33,7 +33,7 @@ function PANEL:Paint(width, height)
 		surface.SetDrawColor(color_panel_foreground)
 		surface.DrawRect(0, 0, width, height)
 
-		surface.SetDrawColor(color_white)
+		surface.SetDrawColor(Color(255, 255, 255))
 		surface.DrawRect(widthFraction, height - 2, width - widthFraction, 2)
 	end
 

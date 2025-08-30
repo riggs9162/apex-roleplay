@@ -1,5 +1,5 @@
 FAdmin.StartHooks["00RCon"] = function()
-	FAdmin.Access.AddPrivilege("RCon", 3)
+	FAdmin.Access.AddPrivilege("RCon", 2)
 	FAdmin.Commands.AddCommand("RCon", "<command>", "<args>")
 
 	FAdmin.ScoreBoard.Server:AddServerAction("RCon", "FAdmin/icons/RCON", Color(255, 0, 0, 255), function() return FAdmin.Access.PlayerHasPrivilege(LocalPlayer(), "RCon") end,

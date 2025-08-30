@@ -17,7 +17,7 @@ FAdmin.StartHooks["Slap"] = function()
 		Title:SetText("  Damage:\n")
 		Title:SetFont("UiBold")
 		Title:SizeToContents()
-		Title:SetTextColor(color_black)
+		Title:SetTextColor(Color(0, 0, 0))
 
 		menu:AddPanel(Title)
 
@@ -28,7 +28,7 @@ FAdmin.StartHooks["Slap"] = function()
 			SubMenuTitle:SetText("  "..v .. " damage\n")
 			SubMenuTitle:SetFont("UiBold")
 			SubMenuTitle:SizeToContents()
-			SubMenuTitle:SetTextColor(color_black)
+			SubMenuTitle:SetTextColor(Color(0, 0, 0))
 
 			SubMenu:AddPanel(SubMenuTitle)
 

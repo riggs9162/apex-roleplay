@@ -10,5 +10,5 @@ end
 FAdmin.StartHooks["RCon"] = function()
 	FAdmin.Commands.AddCommand("RCon", RCon)
 
-	FAdmin.Access.AddPrivilege("RCon", 3) -- Root only
+	FAdmin.Access.AddPrivilege("RCon", 2) -- Root only
 end

@@ -175,11 +175,11 @@ function PANEL:ApplySchemeSettings()
 	self.lblDeaths:SetFont("ScoreboardPlayerName")
 	self.lblPing:SetFont("ScoreboardPlayerName")
 
-	self.lblName:SetFGColor(color_white)
-	self.lblTeam:SetFGColor(color_white)
-	self.lblFrags:SetFGColor(color_white)
-	self.lblDeaths:SetFGColor(color_white)
-	self.lblPing:SetFGColor(color_white)
+	self.lblName:SetFGColor(Color(255, 255, 255))
+	self.lblTeam:SetFGColor(Color(255, 255, 255))
+	self.lblFrags:SetFGColor(Color(255, 255, 255))
+	self.lblDeaths:SetFGColor(Color(255, 255, 255))
+	self.lblPing:SetFGColor(Color(255, 255, 255))
 end
 
 function PANEL:DoClick(x, y)

@@ -2,13 +2,13 @@ include ( 'ironsight_base.lua' )
 
 if SERVER then
 	AddCSLuaFile( "ironsight_pistol.lua" )
-    SWEP.Weight = 5
+	SWEP.Weight = 5
 	SWEP.AutoSwitchTo = false
 	SWEP.AutoSwitchFrom = false
 end
 
 if CLIENT then
-	SWEP.PrintName = "USP Match Pistol 2"
+	SWEP.PrintName = "USP Pistol"
 	SWEP.Slot = 1
 	SWEP.SlotPos = 3
 	SWEP.DrawAmmo = true
@@ -60,15 +60,15 @@ end
 function SWEP:ShootBullet(damage, num_bullets, aimcone)
 	local bullet = {}
 	bullet.Num 	= num_bullets
-	bullet.Src 	= self.Owner:GetShootPos() -- Source
-	bullet.Dir 	= self.Owner:GetAimVector() -- Dir of bullet
+	bullet.Src 	= self:GetOwner():GetShootPos() -- Source
+	bullet.Dir 	= self:GetOwner():GetAimVector() -- Dir of bullet
 	bullet.Spread 	= Vector(aimcone, aimcone, 0)	 -- Aim Cone
 	bullet.Tracer	= 1 -- Show a tracer on every x bullets
 	bullet.Force	= 1 -- Amount of force to give to phys objects
 	bullet.Damage	= 12
 	bullet.AmmoType = "pistol"
 	bullet.TracerName = "Tracer"
-	self.Owner:FireBullets( bullet )
+	self:GetOwner():FireBullets( bullet )
 	self:ShootEffects()
 end
 
@@ -79,7 +79,7 @@ function SWEP:CanPrimaryAttack()
 	if ( self:Clip1() <= 0 ) then
 		self:EmitSound( "Weapon_Pistol.Empty" )
 		self:Reload()
-		self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
+		self:SetNextPrimaryFire( CurTime() + self:GetOwner():GetViewModel():SequenceDuration() )
 		return false
 	end
 	return true
@@ -87,9 +87,9 @@ end
 
 function SWEP:Reload()
 	self:SetIronsights( false )
-	if ( self:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount( self.Primary.Ammo ) > 0 ) then
+	if ( self:Clip1() < self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) > 0 ) then
 		self:DefaultReload( ACT_VM_RELOAD )
-		self:EmitSound( "Weapon_Pistol.Reload" )
+		self:EmitSound( "Weapon_USP.Reload" )
 	end
 end
 
@@ -98,20 +98,20 @@ function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + .01 )
 	self:ShootBullet( 8.7, 1, .03 )
 	self:EmitSound( "Weapon_USP.Single" )
-	if (self.Owner:Crouching()) then
-		self.Owner:ViewPunch( Angle(-.5, 0, 0 ) )
+	if (self:GetOwner():Crouching()) then
+		self:GetOwner():ViewPunch( Angle(-.5, 0, 0 ) )
 	else
-		self.Owner:ViewPunch( Angle( -1, 0, 0 ) )
+		self:GetOwner():ViewPunch( Angle( -1, 0, 0 ) )
 	end
 	self:TakePrimaryAmmo(1)
 end
 
-SWEP.ViewModelFOV = 70
+SWEP.ViewModelFOV = 60
 SWEP.ViewModelFlip = false
 SWEP.UseHands = true
 
-SWEP.ViewModel = "models/apexwep/weapons/v_zistol.mdl"
-SWEP.WorldModel = "models/apexwep/weapons/w_zistol.mdl"
+SWEP.ViewModel = "models/weapons/cstrike/c_pist_usp.mdl"
+SWEP.WorldModel = "models/weapons/w_pist_usp.mdl"
 SWEP.ShowViewModel = true
 SWEP.ShowWorldModel = true
 SWEP.ViewModelBoneMods = {}

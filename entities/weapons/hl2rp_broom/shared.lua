@@ -44,24 +44,24 @@ SWEP.Secondary.Ammo	= "";
 
 function SWEP:Deploy()
 	if SERVER then
-	self.Owner.broomProp = ents.Create("prop_dynamic")
-	self.Owner.broomProp:SetModel("models/props_c17/pushbroom.mdl")
-	self.Owner.broomProp:DrawShadow(true)
-	self.Owner.broomProp:SetMoveType(MOVETYPE_NONE)
-	self.Owner.broomProp:SetParent(self.Owner)
-	self.Owner.broomProp:SetSolid(SOLID_NONE)
-	self.Owner.broomProp:Spawn()
-	self.Owner.broomProp:Fire("setparentattachment", "cleaver_attachment", 0.01)
+	self:GetOwner().broomProp = ents.Create("prop_dynamic")
+	self:GetOwner().broomProp:SetModel("models/props_c17/pushbroom.mdl")
+	self:GetOwner().broomProp:DrawShadow(true)
+	self:GetOwner().broomProp:SetMoveType(MOVETYPE_NONE)
+	self:GetOwner().broomProp:SetParent(self:GetOwner())
+	self:GetOwner().broomProp:SetSolid(SOLID_NONE)
+	self:GetOwner().broomProp:Spawn()
+	self:GetOwner().broomProp:Fire("setparentattachment", "cleaver_attachment", 0.01)
 
 end
 end;
 
 function SWEP:Holster()
-	if (self.Owner.broomProp) then
-		if (self.Owner.broomProp:IsValid()) then
-			self.Owner.broomProp:Remove()
-			--self.Owner:Freeze(false)
-			--self.Owner:SetForcedAnimation(false)
+	if (self:GetOwner().broomProp) then
+		if (self:GetOwner().broomProp:IsValid()) then
+			self:GetOwner().broomProp:Remove()
+			--self:GetOwner():Freeze(false)
+			--self:GetOwner():SetForcedAnimation(false)
 		end;
 	end;
 	return true
@@ -70,10 +70,10 @@ end;
 
 
 function SWEP:OnRemove()
-	if (self.Owner.broomProp) then
-		if (self.Owner.broomProp:IsValid()) then
-			self.Owner.broomProp:Remove()
-			--self.Owner:SetForcedAnimation(false)
+	if (self:GetOwner().broomProp) then
+		if (self:GetOwner().broomProp:IsValid()) then
+			self:GetOwner().broomProp:Remove()
+			--self:GetOwner():SetForcedAnimation(false)
 		end;
 	end;
 	return true
@@ -83,10 +83,10 @@ function SWEP:PrimaryAttack()
 if SERVER then
 		if (!self.isSweep) then
 			self.isSweep = true
-			self.Owner:Freeze(true)
-			self.Owner:forceSequence("Sweep",function() 
-				self.isSweep=nil 
-				self.Owner:Freeze(false)
+			self:GetOwner():Freeze(true)
+			self:GetOwner():forceSequence("Sweep",function()
+				self.isSweep=nil
+				self:GetOwner():Freeze(false)
 			end)
 		end;
 end

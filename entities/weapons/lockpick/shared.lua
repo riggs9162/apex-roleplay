@@ -18,7 +18,7 @@ SWEP.Contact = ""
 SWEP.Purpose = ""
 SWEP.Category = "Apex Roleplay"
 
-SWEP.ViewModelFOV = 62
+SWEP.ViewModelFOV = 60
 SWEP.ViewModelFlip = false
 SWEP.ViewModel = Model("models/weapons/v_crowbar.mdl")
 SWEP.WorldModel = Model("models/weapons/w_crowbar.mdl")
@@ -72,17 +72,17 @@ function SWEP:PrimaryAttack()
 	self.Weapon:SetNextPrimaryFire(CurTime() + 2)
 	if self.IsLockPicking then return end
 
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 	local e = trace.Entity
-	if SERVER and e.isFadingDoor then SendUserMessage("IsFadingDoor", self.Owner, e) end -- The fading door tool only sets isFadingDoor serverside, for the lockpick to work we need this to be set clientside too.
-	
+	if SERVER and e.isFadingDoor then SendUserMessage("IsFadingDoor", self:GetOwner(), e) end -- The fading door tool only sets isFadingDoor serverside, for the lockpick to work we need this to be set clientside too.
+
 	if SERVER and IsValid(e) and e:IsPlayer() and e:GetNWBool("rhc_cuffed", false) then
 		e:CleanUpRHC(true)
 		self:EmitSound("weapons/357/357_reload".. tostring(snd[math.random(1, #snd)]) ..".wav", 70, math.Rand(90, 110))
 		return
 	end
-	
-	if not IsValid(e) or trace.HitPos:Distance(self.Owner:GetShootPos()) > 100 or
+
+	if not IsValid(e) or trace.HitPos:Distance(self:GetOwner():GetShootPos()) > 100 or
 		(not e:IsDoor() and not e:IsVehicle() and not string.find(string.lower(e:GetClass()), "vehicle") and not e.isFadingDoor) then
 		return
 	end
@@ -95,7 +95,7 @@ function SWEP:PrimaryAttack()
 	self.StartPick = CurTime()
 	if SERVER then
 		self.LockPickTime = math.Rand(30, 60)
-		umsg.Start("lockpick_time", self.Owner)
+		umsg.Start("lockpick_time", self:GetOwner())
 			umsg.Entity(self)
 			umsg.Long(self.LockPickTime)
 		umsg.End()
@@ -132,7 +132,7 @@ end
 function SWEP:Succeed()
 	self.IsLockPicking = false
 	self:SetWeaponHoldType("normal")
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 	if trace.Entity.isFadingDoor and trace.Entity.fadeActivate then
 		if not trace.Entity.fadeActive then
 			trace.Entity:fadeActivate()
@@ -156,11 +156,11 @@ end
 
 function SWEP:Think()
 	if self.IsLockPicking then
-		local trace = self.Owner:GetEyeTrace()
+		local trace = self:GetOwner():GetEyeTrace()
 		if not IsValid(trace.Entity) then
 			self:Fail()
 		end
-		if trace.HitPos:Distance(self.Owner:GetShootPos()) > 100 or (not trace.Entity:IsDoor() and not trace.Entity:IsVehicle() and not string.find(string.lower(trace.Entity:GetClass()), "vehicle") and not trace.Entity.isFadingDoor) then
+		if trace.HitPos:Distance(self:GetOwner():GetShootPos()) > 100 or (not trace.Entity:IsDoor() and not trace.Entity:IsVehicle() and not string.find(string.lower(trace.Entity:GetClass()), "vehicle") and not trace.Entity.isFadingDoor) then
 			self:Fail()
 		end
 		if self.EndPick <= CurTime() then
@@ -183,7 +183,7 @@ function SWEP:DrawHUD()
 		local BarWidth = status * (width - 16) + 8
 
 		draw.RoundedBox(0, x + 8, y + 8, BarWidth, height - 16, Color(255 - ( status * 255 ), 0 + ( status * 255 ), 0, 255))
-		draw.SimpleText("Picking lock" .. self.Dots, "TargetID", x + width / 2, y + height / 2, color_white, 1, 1)
+		draw.SimpleText("Picking lock" .. self.Dots, "TargetID", x + width / 2, y + height / 2, Color(255, 255, 255), 1, 1)
 	end
 end
 

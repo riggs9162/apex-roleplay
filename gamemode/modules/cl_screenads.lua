@@ -14,7 +14,7 @@ function apex.screenads.Init()
     label:Dock(TOP)
     label:SetText("Loading...")
     label:SetFont("GModNotify")
-    label:SetTextColor(color_white)
+    label:SetTextColor(Color(255, 255, 255))
 
     panel:AddItem(label)
 
@@ -50,5 +50,5 @@ if ( timer.Exists("apex-screen-ads") ) then
 end
 
 timer.Create("apex-screen-ads", 300, 0, function()
-    apex.screenads.ChangeAd(screenAds[math.random(#screenAds)], color_white)
+    apex.screenads.ChangeAd(screenAds[math.random(#screenAds)], Color(255, 255, 255))
 end)

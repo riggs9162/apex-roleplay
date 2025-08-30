@@ -139,8 +139,42 @@ net.Receive("apex.overwatch.select", function(_, client)
 
 	-- Apply changes
 	client:StripWeapons()
+
 	GiveWeapons(client, {"weapon_physcannon", "gmod_tool", "weapon_physgun", "keys", "pocket", "door_ram", "weaponchecker"})
-	GiveWeapons(client, divData.weapons[rankID])
+
+	-- Give all weapons for this division for ranks <= selected rank (avoid duplicates)
+	local given = {}
+	local weapons = divData.weapons or {}
+
+	-- Detect plain list (e.g. {"weapon_x","weapon_y"}) vs rank-keyed table (e.g. [1] = {"wep"}, [2] = {"wep"})
+	local isPlainList = false
+	for k, v in pairs(weapons) do
+		if type(v) == "string" then
+			isPlainList = true
+			break
+		end
+	end
+
+	if isPlainList then
+		for _, wep in ipairs(weapons) do
+			if not given[wep] then
+				client:Give(wep)
+				given[wep] = true
+			end
+		end
+	else
+		for rID, wtab in pairs(weapons) do
+			local idnum = (type(rID) == "number") and rID or tonumber(rID)
+			if idnum and idnum <= rankID then
+				for _, wep in ipairs(wtab or {}) do
+					if not given[wep] then
+						client:Give(wep)
+						given[wep] = true
+					end
+				end
+			end
+		end
+	end
 
 	client:SetSkin(divData.skin or 0)
 

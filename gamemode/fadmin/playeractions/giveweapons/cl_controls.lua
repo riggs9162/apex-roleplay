@@ -20,7 +20,7 @@ end
 function PANEL:PerformLayout()
 	self.Label:SizeToContents()
 	self.Label:SetFont("TabLarge")
-	self.Label:SetTextColor(color_white)
+	self.Label:SetTextColor(Color(255, 255, 255))
 	self.Label:SetContentAlignment(5)
 	self.Label:SetWide(self:GetWide())
 	self.Label:AlignBottom(2)

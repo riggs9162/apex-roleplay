@@ -45,7 +45,7 @@ SWEP.Primary.Sound = Sound("crownetwork/9mmsil.wav")
 
 SWEP.ViewModel = "models/weapons/c_pistol.mdl"
 SWEP.WorldModel = "models/weapons/w_pistol.mdl"
-SWEP.ViewModelFOV = 66
+SWEP.ViewModelFOV = 60
 
 SWEP.Primary.ClipSize = 18
 SWEP.Primary.DefaultClip = 18
@@ -81,14 +81,14 @@ end
 function SWEP:ShootBullet(damage, num_bullets, aimcone)
 	local bullet = {}
 	bullet.Num 	= num_bullets
-	bullet.Src 	= self.Owner:GetShootPos() -- Source
-	bullet.Dir 	= self.Owner:GetAimVector() -- Dir of bullet
+	bullet.Src 	= self:GetOwner():GetShootPos() -- Source
+	bullet.Dir 	= self:GetOwner():GetAimVector() -- Dir of bullet
 	bullet.Spread 	= Vector(aimcone, aimcone, 0)	 -- Aim Cone
 	bullet.Tracer	= 1 -- Show a tracer on every x bullets
 	bullet.Force	= 1 -- Amount of force to give to phys objects
 	bullet.Damage	= damage
 	bullet.AmmoType = "357"
-	self.Owner:FireBullets( bullet )
+	self:GetOwner():FireBullets( bullet )
 	self:ShootEffects()
 end
 
@@ -99,7 +99,7 @@ function SWEP:CanPrimaryAttack()
 	if ( self:Clip1() <= 0 ) then
 		self:EmitSound( "Weapon_Pistol.Empty" )
 		self:Reload()
-		self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
+		self:SetNextPrimaryFire( CurTime() + self:GetOwner():GetViewModel():SequenceDuration() )
 		return false
 	end
 	return true
@@ -107,7 +107,7 @@ end
 
 function SWEP:Reload()
 	self:SetIronsights( false )
-	if ( self:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount( self.Primary.Ammo ) > 0 ) then
+	if ( self:Clip1() < self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) > 0 ) then
 		self:DefaultReload( ACT_VM_RELOAD )
 		self:EmitSound( "Weapon_Pistol.Reload" )
 	end
@@ -118,10 +118,10 @@ function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + .01 )
 	self:ShootBullet( 12, 1, .01 )
 	self:EmitSound( "Weapon_Pistol.Single" )
-	if (self.Owner:Crouching()) then
-		self.Owner:ViewPunch( Angle(-.5, 0, 0 ) )
+	if (self:GetOwner():Crouching()) then
+		self:GetOwner():ViewPunch( Angle(-.5, 0, 0 ) )
 	else
-		self.Owner:ViewPunch( Angle( -1, 0, 0 ) )
+		self:GetOwner():ViewPunch( Angle( -1, 0, 0 ) )
 	end
 	self:TakePrimaryAmmo(1)
 end

@@ -229,7 +229,7 @@ FAdmin.StartHooks["CL_KickBan"] = function()
 			Text:SetText( NICK.. " knows he is getting kicked\nTake all your time entering the reason, he can't do anything anymore")
 			Text:SizeToContents()
 			Text:SetContentAlignment( 5 )
-			Text:SetTextColor( color_white )
+			Text:SetTextColor( Color(255, 255, 255) )
 
 		local TextEntry = vgui.Create("DTextEntry", InnerPanel )
 			function TextEntry:OnTextChanged()

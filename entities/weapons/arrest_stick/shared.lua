@@ -18,7 +18,7 @@ SWEP.Contact = ""
 SWEP.Purpose = ""
 SWEP.IconLetter = ""
 
-SWEP.ViewModelFOV = 62
+SWEP.ViewModelFOV = 60
 SWEP.ViewModelFlip = false
 SWEP.AnimPrefix = "stunstick"
 
@@ -79,7 +79,7 @@ function SWEP:PrimaryAttack()
 	self:NewSetWeaponHoldType("melee")
 	timer.Simple(0.3, function() if self:IsValid() then self:NewSetWeaponHoldType("normal") end end)
 
-	self.Owner:SetAnimation(PLAYER_ATTACK1)
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
 	self.Weapon:EmitSound(self.Sound)
 	self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
 
@@ -87,10 +87,10 @@ function SWEP:PrimaryAttack()
 
 	if CLIENT then return end
 
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 
 	if IsValid(trace.Entity) and trace.Entity:IsPlayer() and trace.Entity:IsCombine() and not GAMEMODE.Config.cpcanarrestcp then
-		GAMEMODE:Notify(self.Owner, 1, 5, "You can not arrest other CPs!")
+		GAMEMODE:Notify(self:GetOwner(), 1, 5, "You can not arrest other CPs!")
 		return
 	end
 
@@ -103,7 +103,7 @@ function SWEP:PrimaryAttack()
 		end
 	end
 
-	if not IsValid(trace.Entity) or (self.Owner:EyePos():Distance(trace.Entity:GetPos()) > 115) or (not trace.Entity:IsPlayer() and not trace.Entity:IsNPC()) then
+	if not IsValid(trace.Entity) or (self:GetOwner():EyePos():Distance(trace.Entity:GetPos()) > 115) or (not trace.Entity:IsPlayer() and not trace.Entity:IsNPC()) then
 		return
 	end
 
@@ -112,34 +112,34 @@ function SWEP:PrimaryAttack()
 	end
 
 	if GAMEMODE.Config.needwantedforarrest and not trace.Entity:IsNPC() and not trace.Entity:GetDarkRPVar("wanted") then
-		GAMEMODE:Notify(self.Owner, 1, 5, "The player must be wanted in order to be able to arrest them.")
+		GAMEMODE:Notify(self:GetOwner(), 1, 5, "The player must be wanted in order to be able to arrest them.")
 		return
 	end
 
 	if FAdmin and trace.Entity:IsPlayer() and trace.Entity:FAdmin_GetGlobal("fadmin_jailed") then
-		GAMEMODE:Notify(self.Owner, 1, 5, "You cannot arrest a player who has been jailed by an admin.")
+		GAMEMODE:Notify(self:GetOwner(), 1, 5, "You cannot arrest a player who has been jailed by an admin.")
 		return
 	end
 
 	local jpc = apex.db.CountJailPos()
 
 	--if not jpc or jpc == 0 then
-	--	GAMEMODE:Notify(self.Owner, 1, 4, "You cannot arrest people since there are no jail positions set!")
+	--	GAMEMODE:Notify(self:GetOwner(), 1, 4, "You cannot arrest people since there are no jail positions set!")
 	--else
 		-- Send NPCs to Jail
 		if trace.Entity:IsNPC() then
 			trace.Entity:SetPos(apex.db.RetrieveJailPos())
 		else
 			if not trace.Entity.Babygod then
-				trace.Entity:arrest(nil, self.Owner)
-				GAMEMODE:Notify(self.Owner, 0, 4, "You have arrested " .. trace.Entity:Nick())
-				GAMEMODE:Notify(trace.Entity, 0, 20, "You've been arrested by " .. self.Owner:Nick())
+				trace.Entity:arrest(nil, self:GetOwner())
+				GAMEMODE:Notify(self:GetOwner(), 0, 4, "You have arrested " .. trace.Entity:Nick())
+				GAMEMODE:Notify(trace.Entity, 0, 20, "You've been arrested by " .. self:GetOwner():Nick())
 
-				if self.Owner.SteamName then
-					apex.db.Log(self.Owner:Nick().." ("..self.Owner:SteamID64()..") arrested "..trace.Entity:Nick(), nil, Color(0, 255, 255))
+				if self:GetOwner().SteamName then
+					apex.db.Log(self:GetOwner():Nick().." ("..self:GetOwner():SteamID64()..") arrested "..trace.Entity:Nick(), nil, Color(0, 255, 255))
 				end
 			else
-				GAMEMODE:Notify(self.Owner, 1, 4, "You can't arrest players who are spawning.")
+				GAMEMODE:Notify(self:GetOwner(), 1, 4, "You can't arrest players who are spawning.")
 			end
 		end
 	--end
@@ -151,7 +151,7 @@ function SWEP:SecondaryAttack()
 	self:NewSetWeaponHoldType("melee")
 	timer.Simple(0.3, function() if self:IsValid() then self:NewSetWeaponHoldType("normal") end end)
 
-	self.Owner:SetAnimation(PLAYER_ATTACK1)
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
 	self.Weapon:EmitSound(self.Sound)
 	self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
 
@@ -159,17 +159,17 @@ function SWEP:SecondaryAttack()
 
 	if CLIENT then return end
 
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 
-	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or (self.Owner:EyePos():Distance(trace.Entity:GetPos()) > 115) or not trace.Entity:GetDarkRPVar("Arrested") then
+	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or (self:GetOwner():EyePos():Distance(trace.Entity:GetPos()) > 115) or not trace.Entity:GetDarkRPVar("Arrested") then
 		return
 	end
 
-	trace.Entity:unArrest(self.Owner)
-	GAMEMODE:Notify(self.Owner, 0, 4, "You have unarrested " .. trace.Entity:Nick())
-	GAMEMODE:Notify(trace.Entity, 0, 4, "You were unarrested by " .. self.Owner:Nick())
+	trace.Entity:unArrest(self:GetOwner())
+	GAMEMODE:Notify(self:GetOwner(), 0, 4, "You have unarrested " .. trace.Entity:Nick())
+	GAMEMODE:Notify(trace.Entity, 0, 4, "You were unarrested by " .. self:GetOwner():Nick())
 
-	if self.Owner.SteamName then
-		apex.db.Log(self.Owner:Nick().." ("..self.Owner:SteamID64()..") unarrested "..trace.Entity:Nick(), nil, Color(0, 255, 255))
+	if self:GetOwner().SteamName then
+		apex.db.Log(self:GetOwner():Nick().." ("..self:GetOwner():SteamID64()..") unarrested "..trace.Entity:Nick(), nil, Color(0, 255, 255))
 	end
 end

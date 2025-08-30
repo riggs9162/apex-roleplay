@@ -33,7 +33,7 @@ hook.Add("HUDPaint", "apex.admin.esp", function()
             draw.DrawText(v:Nick(), "TargetID", pos.x, pos.y, color, TEXT_ALIGN_CENTER)
 
             if ( rebel ) then
-                draw.DrawText("REBEL", "TargetID", pos.x, pos.y + 20, color_white, TEXT_ALIGN_CENTER)
+                draw.DrawText("REBEL", "TargetID", pos.x, pos.y + 20, Color(255, 255, 255), TEXT_ALIGN_CENTER)
             end
         end
     end
@@ -43,7 +43,7 @@ hook.Add("HUDPaint", "apex.admin.esp", function()
         if ( class == "apex_cp_npc" or class == "apex_ota_npc" ) then
             local pos = ent:LocalToWorld(ent:OBBCenter()):ToScreen()
             local label = class == "apex_cp_npc" and "CP NPC" or "OTA NPC"
-            draw.DrawText(label, "TargetID", pos.x, pos.y, color_white, TEXT_ALIGN_CENTER)
+            draw.DrawText(label, "TargetID", pos.x, pos.y, Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
     end
 
@@ -54,12 +54,12 @@ hook.Add("HUDPaint", "apex.admin.esp", function()
     surface.SetDrawColor(color_background)
     surface.DrawRect(x, y, width, height)
 
-    draw.DrawText("Players connected: " .. #players .. "/" .. game.MaxPlayers(), "TargetID", x + 10, y + 10, color_white)
-    draw.DrawText("Cached entity count: " .. #ents.GetAll(), "TargetID", x + 10, y + 30, color_white)
-    draw.DrawText("Total combine: " .. (#team.GetPlayers(TEAM_CP) + #team.GetPlayers(TEAM_OVERWATCH)), "TargetID", x + 10, y + 50, color_white)
-    draw.DrawText("Total citizens: " .. #team.GetPlayers(TEAM_CITIZEN) - rebelCount, "TargetID", x + 10, y + 70, color_white)
-    draw.DrawText("Total rebels: " .. rebelCount, "TargetID", x + 10, y + 90, color_white)
-    draw.DrawText("Total workers: " .. #team.GetPlayers(TEAM_CWU), "TargetID", x + 10, y + 110, color_white)
+    draw.DrawText("Players connected: " .. #players .. "/" .. game.MaxPlayers(), "TargetID", x + 10, y + 10, Color(255, 255, 255))
+    draw.DrawText("Cached entity count: " .. #ents.GetAll(), "TargetID", x + 10, y + 30, Color(255, 255, 255))
+    draw.DrawText("Total combine: " .. (#team.GetPlayers(TEAM_CP) + #team.GetPlayers(TEAM_OVERWATCH)), "TargetID", x + 10, y + 50, Color(255, 255, 255))
+    draw.DrawText("Total citizens: " .. #team.GetPlayers(TEAM_CITIZEN) - rebelCount, "TargetID", x + 10, y + 70, Color(255, 255, 255))
+    draw.DrawText("Total rebels: " .. rebelCount, "TargetID", x + 10, y + 90, Color(255, 255, 255))
+    draw.DrawText("Total workers: " .. #team.GetPlayers(TEAM_CWU), "TargetID", x + 10, y + 110, Color(255, 255, 255))
 end)
 
 concommand.Add("apex_admin_esp_toggle", function(ply)

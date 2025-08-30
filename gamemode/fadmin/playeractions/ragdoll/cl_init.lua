@@ -26,7 +26,7 @@ FAdmin.StartHooks["Ragdoll"] = function()
 		Title:SetText("  Ragdoll Type:\n")
 		Title:SetFont("UiBold")
 		Title:SizeToContents()
-		Title:SetTextColor(color_black)
+		Title:SetTextColor(Color(0, 0, 0))
 
 		menu:AddPanel(Title)
 

@@ -42,7 +42,7 @@ FAdmin.StartHooks["1SetAccess"] = function() -- 1 in hook name so it will be exe
 		Title:SetText("  Set access:\n")
 		Title:SetFont("UiBold")
 		Title:SizeToContents()
-		Title:SetTextColor(color_black)
+		Title:SetTextColor(Color(0, 0, 0))
 
 		menu:AddPanel(Title)
 

@@ -7,7 +7,7 @@ end
 local function CommaTheCash( num )
 	if ( !num ) then return end
 
-	for i = string.len( num ) - 3, 1, -3 do 
+	for i = string.len( num ) - 3, 1, -3 do
 		num = string.sub( num, 1, i ) .. "," .. string.sub( num, i + 1 )
 	end
 
@@ -44,7 +44,7 @@ concommand.Add( "apex_atm_nopin", function( client, cmd, args )
 
 	local DLabel5 = vgui.Create( "DLabel", DermaPanel4 )
 	DLabel5:SetPos( 26, 25 )
-	DLabel5:SetColor( color_white )
+	DLabel5:SetColor( Color(255, 255, 255) )
 	DLabel5:SetFont( "TabLarge" )
 	DLabel5:SetText( "Please Create a PIN." )
 	DLabel5:SizeToContents()
@@ -89,7 +89,7 @@ concommand.Add( "apex_atm_open", function( client, cmd, args )
 		DermaPanel5.Paint = function( self, w, h ) -- 'function Frame:Paint( w, h )' works too
 			draw.RoundedBox( 0, 0, 0, w, h, Color( 0,0,0, 200 ) )
 			draw.RoundedBox( 0, 0, 0, w, 25, Color( 73,147,197, 150 ) ) -- Draw a red box instead of the frame
-		end	
+		end
 
 	local PropertySheet = vgui.Create( "DPropertySheet", DermaPanel5 )
 	PropertySheet:SetPos( 0, 25 )
@@ -99,7 +99,7 @@ concommand.Add( "apex_atm_open", function( client, cmd, args )
 
 	local DLabel1 = vgui.Create( "DLabel", TabA )
 	DLabel1:SetPos( 24, 20 )
-	DLabel1:SetColor( color_white )
+	DLabel1:SetColor( Color(255, 255, 255) )
 	DLabel1:SetFont( "TabLarge" )
 	DLabel1:SetText( "Select Account:" )
 	DLabel1:SizeToContents()
@@ -118,7 +118,7 @@ concommand.Add( "apex_atm_open", function( client, cmd, args )
 
 	local DLabel2 = vgui.Create( "DLabel", TabA )
 	DLabel2:SetPos( 24, 70  )
-	DLabel2:SetColor( color_white )
+	DLabel2:SetColor( Color(255, 255, 255) )
 	DLabel2:SetFont( "TabLarge" )
 	DLabel2:SetText( "Enter PIN:" )
 	DLabel2:SizeToContents()
@@ -147,7 +147,7 @@ concommand.Add( "apex_atm_open", function( client, cmd, args )
 	button2:SetTextColor(BColor)
 	button2.DoClick = function()
 		RunConsoleCommand( "apex_atm_nopin" )
-		chat.AddText( color_white, "Security Note: DO NOT USE FREQUENTLY-USED, PERSONAL PASSWORDS." )
+		chat.AddText( Color(255, 255, 255), "Security Note: DO NOT USE FREQUENTLY-USED, PERSONAL PASSWORDS." )
 	end
 
 	PropertySheet:AddSheet( "ATM", TabA, "icon16/shield.png", false, false, "ATM Security" )
@@ -186,7 +186,7 @@ concommand.Add( "apex_atm_open", function( client, cmd, args )
 
 	local DLabel2 = vgui.Create( "DLabel", TabB )
 	DLabel2:SetPos( 20, 48 )
-	DLabel2:SetColor( color_white )
+	DLabel2:SetColor( Color(255, 255, 255) )
 	DLabel2:SetFont( "TabLarge" )
 	DLabel2:SetText( "ATMs:" )
 	DLabel2:SizeToContents()
@@ -221,7 +221,7 @@ concommand.Add( "apex_atm_open", function( client, cmd, args )
 
 	local DLabel2 = vgui.Create( "DLabel", TabB )
 	DLabel2:SetPos( 86, 48 )
-	DLabel2:SetColor( color_white )
+	DLabel2:SetColor( Color(255, 255, 255) )
 	DLabel2:SetFont( "TabLarge" )
 	DLabel2:SetText( "Spawns:" )
 	DLabel2:SizeToContents()
@@ -239,7 +239,7 @@ concommand.Add( "apex_atm_open", function( client, cmd, args )
 			"No", function() end
 		)
 	end
-	
+
 	local button4_add = vgui.Create( "DButton", TabB )
 	button4_add:SetSize( 70, 18 )
 	button4_add:SetPos( 72, 84 )
@@ -319,7 +319,7 @@ concommand.Add( "apex_atm_open", function( client, cmd, args )
 			"No", function() end
 		)
 	end
-	
+
 	local button8 = vgui.Create( "DButton", TabB )
 	button8:SetSize( 120, 16 )
 	button8:SetPos( 12, 172 )
@@ -376,7 +376,7 @@ concommand.Add("apex_atm_account",function ( client, cmd, args )
 		DermaPanel.Paint = function( self, w, h ) -- 'function Frame:Paint( w, h )' works too
 			draw.RoundedBox( 0, 0, 0, w, h, Color( 0,0,0, 200 ) )
 			draw.RoundedBox( 0, 0, 0, w, 25, Color( 73,147,197, 150 ) ) -- Draw a red box instead of the frame
-		end	
+		end
 
 	local DLabel7 = vgui.Create( "DLabel", DermaPanel )
 	DLabel7:SetPos( 20, 30 )
@@ -405,7 +405,7 @@ concommand.Add("apex_atm_account",function ( client, cmd, args )
 
 	local DLabel1 = vgui.Create( "DLabel", DermaPanel )
 	DLabel1:SetPos( 20, 78 )
-	DLabel1:SetColor( color_white )
+	DLabel1:SetColor( Color(255, 255, 255) )
 	DLabel1:SetFont( "TabLarge" )
 	DLabel1:SetText( "Deposit:" )
 	DLabel1:SizeToContents()
@@ -429,7 +429,7 @@ concommand.Add("apex_atm_account",function ( client, cmd, args )
 
 	local DLabel2 = vgui.Create( "DLabel", DermaPanel )
 	DLabel2:SetPos( 20, 144 )
-	DLabel2:SetColor( color_white )
+	DLabel2:SetColor( Color(255, 255, 255) )
 	DLabel2:SetFont( "TabLarge" )
 	DLabel2:SetText( "Withdraw:" )
 	DLabel2:SizeToContents()

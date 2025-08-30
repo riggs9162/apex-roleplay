@@ -34,7 +34,7 @@ local function OOC(client, args)
 		text = tostring(text)
 
 		for k, v in player.Iterator() do
-			v:ApexChat([[Color(200, 0, 0), "[OOC] ", steamNAME, ": ", Color(200, 200, 200), message]], client, text)
+			v:ApexChat([[Color(200, 0, 0), "[OOC] ", prefixc, steamNAME, ": ", Color(200, 200, 200), message]], client, text)
 		end
 	end
 

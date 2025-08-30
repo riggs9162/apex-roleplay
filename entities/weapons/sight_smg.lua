@@ -32,7 +32,7 @@ SWEP.AdminSpawnable = true
 
 SWEP.ViewModel = "models/weapons/c_smg1.mdl"
 SWEP.WorldModel = "models/weapons/w_smg1.mdl"
-SWEP.ViewModelFOV = 66
+SWEP.ViewModelFOV = 60
 
 SWEP.Primary.ClipSize = 45
 SWEP.Primary.DefaultClip = 45
@@ -51,7 +51,7 @@ SWEP.IronSightsAng = Vector ( 0, 0, 1 )
 
 function SWEP:DrawHUD()
 
-	if ( !self.Weapon:GetNetworkedBool( "Ironsights" ) ) then
+	if ( !self.Weapon:GetNWBool( "Ironsights" ) ) then
 
 		local x = ScrW() / 2.0
 		local y = ScrH() / 2.0
@@ -108,7 +108,7 @@ end
 
 function SWEP:Reload()
 	self:SetIronsights( false )
-	if ( self:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount( self.Primary.Ammo ) > 0 ) then
+	if ( self:Clip1() < self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) > 0 ) then
 		self:DefaultReload( ACT_VM_RELOAD )
 		self:EmitSound( "Weapon_SMG1.Reload" )
 	end
@@ -118,8 +118,8 @@ function SWEP:ShootBullet(damage, num_bullets, aimcone)
 
 	local bullet = {}
 	bullet.Num 	= num_bullets
-	bullet.Src 	= self.Owner:GetShootPos() -- Source
-	bullet.Dir 	= self.Owner:GetAimVector() -- Dir of bullet
+	bullet.Src 	= self:GetOwner():GetShootPos() -- Source
+	bullet.Dir 	= self:GetOwner():GetAimVector() -- Dir of bullet
 	bullet.Spread 	= Vector(aimcone, aimcone, 0)	 -- Aim Cone
 	bullet.TracerName = "Tracer"
 	bullet.Tracer	= 1 -- Show a tracer on every x bullets
@@ -128,7 +128,7 @@ function SWEP:ShootBullet(damage, num_bullets, aimcone)
 	bullet.AmmoType = "smg1"
 
 	self:TakePrimaryAmmo(1)
-	self.Owner:FireBullets( bullet )
+	self:GetOwner():FireBullets( bullet )
 	self:ShootEffects()
 end
 
@@ -141,7 +141,7 @@ function SWEP:CanPrimaryAttack()
 		self:EmitSound( "Weapon_Pistol.Empty" )
 		self:SetIronsights( false )
 		self:Reload()
-		self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
+		self:SetNextPrimaryFire( CurTime() + self:GetOwner():GetViewModel():SequenceDuration() )
 		return false
 	end
 	return true
@@ -154,9 +154,9 @@ function SWEP:PrimaryAttack()
 		self:EmitSound( "Weapon_SMG1.Single" )
 		self:ShootBullet(4, 1, .04)
 
-	if (self.Owner:Crouching()) then
-		self.Owner:ViewPunch( Angle( -.5, 0, 0 ) )
+	if (self:GetOwner():Crouching()) then
+		self:GetOwner():ViewPunch( Angle( -.5, 0, 0 ) )
 	else
-		self.Owner:ViewPunch( Angle( -.9, 0, 0 ) )
+		self:GetOwner():ViewPunch( Angle( -.9, 0, 0 ) )
 	end
 end

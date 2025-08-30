@@ -1,5 +1,5 @@
 FAdmin.StartHooks["Logging"] = function()
-	FAdmin.Access.AddPrivilege("Logging", 3)
+	FAdmin.Access.AddPrivilege("Logging", 2)
 	FAdmin.Commands.AddCommand("Logging", function(client, cmd, args)
 		if not FAdmin.Access.PlayerHasPrivilege(client, "Logging") then FAdmin.Messages.SendMessage(client, 5, "No access!") return end
 		if not tonumber(args[1]) then return end

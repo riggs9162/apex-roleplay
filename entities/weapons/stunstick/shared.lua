@@ -18,7 +18,7 @@ SWEP.Contact = ""
 SWEP.Purpose = ""
 SWEP.IconLetter = ""
 
-SWEP.ViewModelFOV = 62
+SWEP.ViewModelFOV = 60
 SWEP.ViewModelFlip = false
 
 SWEP.HoldType = "melee";
@@ -96,7 +96,7 @@ function SWEP:PrimaryAttack()
 	self:NewSetWeaponHoldType("melee")
 	timer.Simple(0.3, function() if self:IsValid() then self:NewSetWeaponHoldType("normal") end end)
 
-	self.Owner:SetAnimation(PLAYER_ATTACK1)
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
 	self.Weapon:EmitSound(self.Sound)
 	self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
 
@@ -104,53 +104,53 @@ function SWEP:PrimaryAttack()
 
 	if CLIENT then return end
 
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
         if trace.Entity:GetClass() == "func_movelinear" then return false end
-	if (not IsValid(trace.Entity) or (self.Owner:EyePos():Distance(trace.Entity:GetPos()) > 100)) then return end
+	if (not IsValid(trace.Entity) or (self:GetOwner():EyePos():Distance(trace.Entity:GetPos()) > 100)) then return end
 
 	if SERVER then
 		if not trace.Entity:IsDoor() then
-			trace.Entity:SetVelocity((trace.Entity:GetPos() - self.Owner:GetPos()) * 7)
+			trace.Entity:SetVelocity((trace.Entity:GetPos() - self:GetOwner():GetPos()) * 7)
 		end
 
-		trace.Entity:TakeDamage(10, self.Owner, self)
+		trace.Entity:TakeDamage(10, self:GetOwner(), self)
 
 		if trace.Entity:IsPlayer() or trace.Entity:IsVehicle() then
 			self.DoFlash(self, trace.Entity)
-			self.Owner:EmitSound(self.FleshHit[math.random(1,#self.FleshHit)])
+			self:GetOwner():EmitSound(self.FleshHit[math.random(1,#self.FleshHit)])
 		elseif trace.Entity:IsNPC() then
-			self.Owner:EmitSound(self.FleshHit[math.random(1,#self.FleshHit)])
+			self:GetOwner():EmitSound(self.FleshHit[math.random(1,#self.FleshHit)])
 		else
-			self.Owner:EmitSound(self.Hit[math.random(1,#self.Hit)])
+			self:GetOwner():EmitSound(self.Hit[math.random(1,#self.Hit)])
 			if FPP and FPP.PlayerCanTouchEnt(client, self, "EntityDamage1", "FPP_ENTITYDAMAGE1") then
-				if trace.Entity.SeizeReward and trace.Entity:Getowning_ent() != self.Owner then
-					self.Owner:AddMoney( trace.Entity.SeizeReward )
-					GAMEMODE:Notify( self.Owner, 1, 4, "You have recieved a " .. GAMEMODE.Config.currency .. trace.Entity.SeizeReward .. " bonus for destroying this illegal entity.")
+				if trace.Entity.SeizeReward and trace.Entity:Getowning_ent() != self:GetOwner() then
+					self:GetOwner():AddMoney( trace.Entity.SeizeReward )
+					GAMEMODE:Notify( self:GetOwner(), 1, 4, "You have recieved a " .. GAMEMODE.Config.currency .. trace.Entity.SeizeReward .. " bonus for destroying this illegal entity.")
 				end
-				trace.Entity:TakeDamage(990, self.Owner, self)
+				trace.Entity:TakeDamage(990, self:GetOwner(), self)
 			end
 		end
 	end
 end
 
 function SWEP:SecondaryAttack()
-	self.Owner:LagCompensation(true)
+	self:GetOwner():LagCompensation(true)
 		local data = {}
-			data.start = self.Owner:GetShootPos()
-			data.endpos = data.start + self.Owner:GetAimVector()*72
-			data.filter = self.Owner
+			data.start = self:GetOwner():GetShootPos()
+			data.endpos = data.start + self:GetOwner():GetAimVector()*72
+			data.filter = self:GetOwner()
 			data.mins = Vector(-8, -8, -30)
 			data.maxs = Vector(8, 8, 10)
 		local trace = util.TraceHull(data)
 		local entity = trace.Entity
-	self.Owner:LagCompensation(false)
+	self:GetOwner():LagCompensation(false)
 
 	if (SERVER and IsValid(entity)) then
 		local pushed
 
 
-		if (entity:IsPlayer()) and self.Owner:GetPos():Distance(entity:GetPos())<150 then
-			local direction = self.Owner:GetAimVector() * 320
+		if (entity:IsPlayer()) and self:GetOwner():GetPos():Distance(entity:GetPos())<150 then
+			local direction = self:GetOwner():GetAimVector() * 320
 			direction.z = 0
 
 			entity:SetVelocity(direction)
@@ -162,13 +162,13 @@ function SWEP:SecondaryAttack()
 		if (pushed) then
 			self:SetNextSecondaryFire(CurTime() + 1.5)
 			self:SetNextPrimaryFire(CurTime() + 1.5)
-			self.Owner:EmitSound("weapons/crossbow/hitbod"..math.random(1, 2)..".wav")
+			self:GetOwner():EmitSound("weapons/crossbow/hitbod"..math.random(1, 2)..".wav")
 
 
-			local model = string.lower(self.Owner:GetModel())
+			local model = string.lower(self:GetOwner():GetModel())
 
 			if (apex.anim.getModelClass(model) == "metrocop") then
-				self.Owner:forceSequence("pushplayer")
+				self:GetOwner():forceSequence("pushplayer")
 			end
 		end
 end
@@ -186,7 +186,7 @@ function SWEP:Reload()
 
 	if self.LastReload and self.LastReload > CurTime() - 0.1 then self.LastReload = CurTime() return end
 	self.LastReload = CurTime()
-	self.Owner:EmitSound("weapons/stunstick/spark"..math.random(1,3)..".wav")
+	self:GetOwner():EmitSound("weapons/stunstick/spark"..math.random(1,3)..".wav")
 end
 
 if CLIENT then

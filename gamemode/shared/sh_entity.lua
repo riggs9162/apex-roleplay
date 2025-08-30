@@ -18,12 +18,12 @@ ALWAYS_RAISED["weaponchecker"] = true
 function playerMeta:isWepRaised()
 	local weapon = self.GetActiveWeapon(self)
 	local override = hook.Run("ShouldWeaponBeRaised", self, weapon)
-	
+
 	-- Allow the hook to check first.
 	if (override != nil) then
 		return override
 	end
-	
+
 	-- Some weapons may have their own properties.
 	if (IsValid(weapon)) then
 		-- If their weapon is always raised, return true.
@@ -38,8 +38,12 @@ function playerMeta:isWepRaised()
 		return true
 	end
 
+	if (!self.GetNetVar) then
+		return true
+	end
+
 	-- If the player has been forced to have their weapon lowered.
-	if (self.getNetVar(self, "restricted")) then
+	if (self:GetNetVar("restricted")) then
 		return false
 	end
 
@@ -49,7 +53,7 @@ function playerMeta:isWepRaised()
 	--end
 
 	-- Returns what the gamemode decides.
-	return self.getNetVar(self, "raised", false)
+	return self:GetNetVar("raised", false)
 end
 
 local meta = FindMetaTable("Entity")
@@ -275,8 +279,8 @@ local function SetDoorOwnable(client)
 	time = true
 	timer.Simple(0.1, function() time = false end)
 
-	if not client:HasPriv("apex_doorManipulation") then
-		client:Notify( "You need the rp_doorManipulation privilege")
+	if not client:IsSuperAdmin() then
+		client:Notify( "You need the apex_doorManipulation privilege")
 		return ""
 	end
 
@@ -310,8 +314,8 @@ local function SetDoorGroupOwnable(client, arg)
 
 	local trace = client:GetEyeTrace()
 
-	if not client:HasPriv("apex_doorManipulation") then
-		client:Notify( "You need the rp_doorManipulation privilege")
+	if not client:IsSuperAdmin() then
+		client:Notify( "You need the apex_doorManipulation privilege")
 		return ""
 	end
 
@@ -359,8 +363,8 @@ local function SetDoorTeamOwnable(client, arg)
 	local trace = client:GetEyeTrace()
 
 	local ent = trace.Entity
-	if not client:HasPriv("apex_doorManipulation") then
-		client:Notify( "You need the rp_doorManipulation privilege")
+	if not client:IsSuperAdmin() then
+		client:Notify( "You need the apex_doorManipulation privilege")
 		return ""
 	end
 

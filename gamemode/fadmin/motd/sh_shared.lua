@@ -21,7 +21,7 @@ if CLIENT then -- I can't be bothered to make a cl_init when there's a shared fi
 			Text:SetText("Set the MOTD page. Click default to reset the MOTD to the text file in data/FAdmin/MOTD.txt.")
 			Text:SizeToContents()
 			Text:SetContentAlignment(5)
-			Text:SetTextColor(color_white)
+			Text:SetTextColor(Color(255, 255, 255))
 
 			local TextEntry = vgui.Create("DTextEntry", InnerPanel)
 			TextEntry:SetText(GetConVarString("_FAdmin_MOTDPage"))

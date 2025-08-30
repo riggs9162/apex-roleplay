@@ -461,7 +461,7 @@ FAdmin.StartHooks["DarkRP"] = function()
 		Title:SetText("  Jobs:\n")
 		Title:SetFont("UiBold")
 		Title:SizeToContents()
-		Title:SetTextColor(color_black)
+		Title:SetTextColor(Color(0, 0, 0))
 		local command = "apex_teamban"
 
 		menu:AddPanel(Title)
@@ -483,7 +483,7 @@ FAdmin.StartHooks["DarkRP"] = function()
 		Title:SetText("  Jobs:\n")
 		Title:SetFont("UiBold")
 		Title:SizeToContents()
-		Title:SetTextColor(color_black)
+		Title:SetTextColor(Color(0, 0, 0))
 		local command = "apex_teamunban"
 
 		menu:AddPanel(Title)

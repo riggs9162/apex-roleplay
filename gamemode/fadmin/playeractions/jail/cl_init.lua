@@ -25,7 +25,7 @@ FAdmin.StartHooks["Jail"] = function()
 		Title:SetText("  Jail Type:\n")
 		Title:SetFont("UiBold")
 		Title:SizeToContents()
-		Title:SetTextColor(color_black)
+		Title:SetTextColor(Color(0, 0, 0))
 
 		menu:AddPanel(Title)
 

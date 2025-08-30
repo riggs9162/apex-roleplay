@@ -22,7 +22,7 @@ netstream.Hook("gVar", function(key, value)
 	apex.net.globals[key] = value
 end)
 
-function getNetVar(key, default)
+function GetNetVar(key, default)
 	local value = apex.net.globals[key]
 
 	return value != nil and value or default
@@ -38,4 +38,4 @@ function entityMeta:GetNetVar(key, default)
 	return default
 end
 
-playerMeta.getLocalVar = entityMeta.getNetVar
+playerMeta.getLocalVar = entityMeta.GetNetVar

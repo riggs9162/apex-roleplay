@@ -7,10 +7,10 @@ apex.net.globals = apex.net.globals or {}
 -- Check if there is an attempt to send a function. Can't send those.
 local function checkBadType(name, object)
 	local objectType = type(object)
-	
+
 	if (objectType == "function") then
 		ErrorNoHalt("Net var '"..name.."' contains a bad object type!")
-		
+
 		return true
 	elseif (objectType == "table") then
 		for k, v in pairs(object) do
@@ -22,9 +22,9 @@ local function checkBadType(name, object)
 	end
 end
 
-function setNetVar(key, value, receiver)
+function SetNetVar(key, value, receiver)
 	if (checkBadType(key, value)) then return end
-	if (getNetVar(key) == value) then return end
+	if (GetNetVar(key) == value) then return end
 
 	apex.net.globals[key] = value
 	netstream.Start(receiver, "gVar", key, value)
@@ -55,7 +55,7 @@ end
 
 function entityMeta:SetNetVar(key, value, receiver)
 	if (checkBadType(key, value)) then return end
-		
+
 	apex.net[self] = apex.net[self] or {}
 
 	if (apex.net[self][key] != value) then
@@ -75,16 +75,16 @@ end
 
 function playerMeta:SetLocalVar(key, value)
 	if (checkBadType(key, value)) then return end
-	
+
 	apex.net[self] = apex.net[self] or {}
 	apex.net[self][key] = value
 
 	netstream.Start(self, "nLcl", key, value)
 end
 
-playerMeta.getLocalVar = entityMeta.getNetVar
+playerMeta.getLocalVar = entityMeta.GetNetVar
 
-function getNetVar(key, default)
+function GetNetVar(key, default)
 	local value = apex.net.globals[key]
 
 	return value != nil and value or default

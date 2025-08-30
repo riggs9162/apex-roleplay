@@ -16,7 +16,7 @@ function FAdmin.PlayerActions.addTimeSubmenu(menu, submenuText, submenuClick, su
 	SubMenuTitle:SetText("Time:\n")
 	SubMenuTitle:SetFont("UiBold")
 	SubMenuTitle:SizeToContents()
-	SubMenuTitle:SetTextColor(color_black)
+	SubMenuTitle:SetTextColor(Color(0, 0, 0))
 
 	SubMenu:AddPanel(SubMenuTitle)
 
@@ -31,7 +31,7 @@ function FAdmin.PlayerActions.addTimeMenu(ItemClick)
 	Title:SetText("Time:\n")
 	Title:SetFont("UiBold")
 	Title:SizeToContents()
-	Title:SetTextColor(color_black)
+	Title:SetTextColor(Color(0, 0, 0))
 
 	for secs, Time in SortedPairs(FAdmin.PlayerActions.commonTimes) do
 		menu:AddOption(Time, function() ItemClick(secs) end)

@@ -15,7 +15,7 @@ SWEP.Instructions = "Left click to Check weapons, right click to confiscate guns
 SWEP.Contact = ""
 SWEP.Purpose = ""
 
-SWEP.ViewModelFOV = 62
+SWEP.ViewModelFOV = 60
 SWEP.ViewModelFlip = false
 SWEP.AnimPrefix	 = "rpg"
 
@@ -58,8 +58,8 @@ end
 
 function SWEP:Deploy()
 	if SERVER then
-		self.Owner:DrawViewModel(false)
-		self.Owner:DrawWorldModel(false)
+		self:GetOwner():DrawViewModel(false)
+		self:GetOwner():DrawWorldModel(false)
 	end
 end
 
@@ -67,9 +67,9 @@ function SWEP:PrimaryAttack()
 	if CLIENT or self.IsWeaponChecking then return end
 	self.Weapon:SetNextPrimaryFire(CurTime() + 0.2)
 
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 
-	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or trace.Entity:GetPos():Distance(self.Owner:GetPos()) > 100 then
+	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or trace.Entity:GetPos():Distance(self:GetOwner():GetPos()) > 100 then
 		return
 	end
 
@@ -79,20 +79,20 @@ function SWEP:PrimaryAttack()
 			result = result..", ".. v:GetClass()
 		end
 	end
-	self.Owner:EmitSound("npc/combine_soldier/gear5.wav", 50, 100)
-	timer.Simple(0.3, function() self.Owner:EmitSound("npc/combine_soldier/gear5.wav", 50, 100) end)
-	self.Owner:ChatPrint(trace.Entity:Nick() .."'s weapons:")
+	self:GetOwner():EmitSound("npc/combine_soldier/gear5.wav", 50, 100)
+	timer.Simple(0.3, function() self:GetOwner():EmitSound("npc/combine_soldier/gear5.wav", 50, 100) end)
+	self:GetOwner():ChatPrint(trace.Entity:Nick() .."'s weapons:")
 	if result == "" then
-		self.Owner:ChatPrint(trace.Entity:Nick() .. " has no weapons")
+		self:GetOwner():ChatPrint(trace.Entity:Nick() .. " has no weapons")
 	else
 		local endresult = string.sub(result, 3)
 		if string.len(endresult) >= 126 then
 			local amount = math.ceil(string.len(endresult) / 126)
 			for i = 1, amount, 1 do
-				self.Owner:ChatPrint(string.sub(endresult, (i-1) * 126, i * 126 - 1))
+				self:GetOwner():ChatPrint(string.sub(endresult, (i-1) * 126, i * 126 - 1))
 			end
 		else
-			self.Owner:ChatPrint(string.sub(result, 3))
+			self:GetOwner():ChatPrint(string.sub(result, 3))
 		end
 	end
 end
@@ -101,9 +101,9 @@ function SWEP:SecondaryAttack()
 	if CLIENT or self.IsWeaponChecking then return end
 	self.Weapon:SetNextSecondaryFire(CurTime() + 0.2)
 
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 
-	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or trace.Entity:GetPos():Distance(self.Owner:GetPos()) > 100 then
+	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or trace.Entity:GetPos():Distance(self:GetOwner():GetPos()) > 100 then
 		return
 	end
 
@@ -112,7 +112,7 @@ function SWEP:SecondaryAttack()
 
 	if SERVER then
 		self.WeaponCheckTime = math.Rand(5, 10)
-		umsg.Start("weaponcheck_time", self.Owner)
+		umsg.Start("weaponcheck_time", self:GetOwner())
 			umsg.Entity(self)
 			umsg.Long(self.WeaponCheckTime)
 		umsg.End()
@@ -130,14 +130,14 @@ function SWEP:Reload()
 	if CLIENT or not self.Weapon.OnceReload then return end
 	self.Weapon.OnceReload = false
 	timer.Simple(1, function() self.Weapon.OnceReload = true end)
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 
-	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or trace.Entity:GetPos():Distance(self.Owner:GetPos()) > 100 then
+	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or trace.Entity:GetPos():Distance(self:GetOwner():GetPos()) > 100 then
 		return
 	end
 
 	if not trace.Entity:GetTable().ConfiscatedWeapons then
-		GAMEMODE:Notify(self.Owner, 1, 4, trace.Entity:Nick() .. " had no weapons confisquated!")
+		GAMEMODE:Notify(self:GetOwner(), 1, 4, trace.Entity:Nick() .. " had no weapons confisquated!")
 		return
 	else
 		for k,v in pairs(trace.Entity.ConfiscatedWeapons) do
@@ -150,7 +150,7 @@ function SWEP:Reload()
 			wep:SetClip2(v[7])
 
 		end
-		GAMEMODE:Notify(self.Owner, 2, 4, "Returned "..trace.Entity:Nick() .. "'s confisquated weapons!")
+		GAMEMODE:Notify(self:GetOwner(), 2, 4, "Returned "..trace.Entity:Nick() .. "'s confisquated weapons!")
 		trace.Entity:GetTable().ConfiscatedWeapons = nil
 	end
 end
@@ -163,13 +163,13 @@ function SWEP:Holster()
 end
 
 function SWEP:Succeed()
-	if not IsValid(self.Owner) then return end
+	if not IsValid(self:GetOwner()) then return end
 	self.IsWeaponChecking = false
 
 	if CLIENT then return end
 	local result = ""
 	local stripped = {}
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self:GetOwner():GetEyeTrace()
 	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() then return end
 	for k,v in pairs(trace.Entity:GetWeapons()) do
 		if not table.HasValue(NoStripWeapons, string.lower(v:GetClass())) then
@@ -202,20 +202,20 @@ function SWEP:Succeed()
 	end
 
 	if result == "" then
-		self.Owner:ChatPrint(trace.Entity:Nick() .. " has no illegal weapons")
-		self.Owner:EmitSound("npc/combine_soldier/gear5.wav", 50, 100)
-		timer.Simple(0.3, function() self.Owner:EmitSound("npc/combine_soldier/gear5.wav", 50, 100) end)
+		self:GetOwner():ChatPrint(trace.Entity:Nick() .. " has no illegal weapons")
+		self:GetOwner():EmitSound("npc/combine_soldier/gear5.wav", 50, 100)
+		timer.Simple(0.3, function() self:GetOwner():EmitSound("npc/combine_soldier/gear5.wav", 50, 100) end)
 	else
 		local endresult = string.sub(result, 3)
-		self.Owner:EmitSound("ambient/energy/zap1.wav", 50, 100)
-		self.Owner:ChatPrint("Confisquated these weapons:")
+		self:GetOwner():EmitSound("ambient/energy/zap1.wav", 50, 100)
+		self:GetOwner():ChatPrint("Confisquated these weapons:")
 		if string.len(endresult) >= 126 then
 			local amount = math.ceil(string.len(endresult) / 126)
 			for i = 1, amount, 1 do
-				self.Owner:ChatPrint(string.sub(endresult, (i-1) * 126, i * 126 - 1))
+				self:GetOwner():ChatPrint(string.sub(endresult, (i-1) * 126, i * 126 - 1))
 			end
 		else
-			self.Owner:ChatPrint(string.sub(result, 3))
+			self:GetOwner():ChatPrint(string.sub(result, 3))
 		end
 	end
 end
@@ -229,11 +229,11 @@ end
 
 function SWEP:Think()
 	if self.IsWeaponChecking then
-		local trace = self.Owner:GetEyeTrace()
+		local trace = self:GetOwner():GetEyeTrace()
 		if not IsValid(trace.Entity) then
 			self:Fail()
 		end
-		if trace.HitPos:Distance(self.Owner:GetShootPos()) > 100 or not trace.Entity:IsPlayer() then
+		if trace.HitPos:Distance(self:GetOwner():GetShootPos()) > 100 or not trace.Entity:IsPlayer() then
 			self:Fail()
 		end
 		if self.EndCheck <= CurTime() then

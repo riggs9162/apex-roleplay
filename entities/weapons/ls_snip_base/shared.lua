@@ -28,7 +28,7 @@ SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
 SWEP.Ironsights = false
 
-SWEP.ViewModelFOV = 70
+SWEP.ViewModelFOV = 60
 
 function SWEP:CanPrimaryAttack()
 	if ( self:Clip1() <= 0 ) then
@@ -44,7 +44,7 @@ function SWEP:PrimaryAttack()
 	if self:CanPrimaryAttack() == false then return end
 	if self:GetNextPrimaryFire() > CurTime() then return end
 	if self:GetNextSecondaryFire() > CurTime() then return end
-	if not IsValid(self.Owner) then return end
+	if not IsValid(self:GetOwner()) then return end
 	self:SetNextSecondaryFire(CurTime() + self.Primary.Delay)
 	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 
@@ -63,7 +63,7 @@ function SWEP:PrimaryAttack()
 	self:TakePrimaryAmmo(1)
 
 	-- Punch the player's view
-	self.Owner:ViewPunch(Angle(math.Rand(-0.2,-0.1) * self.Primary.Recoil, math.Rand(-0.1,0.1) *self.Primary.Recoil, 0))
+	self:GetOwner():ViewPunch(Angle(math.Rand(-0.2,-0.1) * self.Primary.Recoil, math.Rand(-0.1,0.1) *self.Primary.Recoil, 0))
 end
 
 local IRONSIGHT_TIME = 0.25
@@ -130,7 +130,7 @@ SecondaryAttack
 ---------------------------------------------------------*/
 
 function SWEP:SecondaryAttack()
-	if not IsValid(self.Owner) then return end
+	if not IsValid(self:GetOwner()) then return end
 	if not self.IronSightsPos then return end
 
 	if (self.NextSecondaryAttack > CurTime()) then return end
@@ -143,7 +143,7 @@ function SWEP:SecondaryAttack()
 
 	if self.ScopeLevel == 0 then
 		if (SERVER) then
-			self.Owner:SetFOV(25, 0)
+			self:GetOwner():SetFOV(25, 0)
 		end
 
 		self.ScopeLevel = 1
@@ -153,7 +153,7 @@ function SWEP:SecondaryAttack()
 	else
 		if self.ScopeLevel == 1 then
 			if (SERVER) then
-				self.Owner:SetFOV(5, 0)
+				self:GetOwner():SetFOV(5, 0)
 			end
 
 			self.ScopeLevel = 2
@@ -163,7 +163,7 @@ function SWEP:SecondaryAttack()
 			self.CurHoldType = self.HoldType
 		else
 			if (SERVER) then
-				self.Owner:SetFOV(0, 0)
+				self:GetOwner():SetFOV(0, 0)
 			end
 
 			self.ScopeLevel = 0
@@ -176,9 +176,9 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Holster()
-	if not IsValid(self.Owner) then return end
+	if not IsValid(self:GetOwner()) then return end
 	if (SERVER) then
-		self.Owner:SetFOV(0, 0)
+		self:GetOwner():SetFOV(0, 0)
 	end
 
 	self.ScopeLevel = 0
@@ -188,9 +188,9 @@ function SWEP:Holster()
 end
 
 function SWEP:Reload()
-	if not IsValid(self.Owner) then return end
+	if not IsValid(self:GetOwner()) then return end
 	if (SERVER) then
-		self.Owner:SetFOV(0, 0)
+		self:GetOwner():SetFOV(0, 0)
 	end
 
 	self.ScopeLevel = 0

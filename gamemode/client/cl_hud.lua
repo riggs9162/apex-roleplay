@@ -51,7 +51,7 @@ local function DrawVoiceChat()
 		end
 
 		surface.SetTexture(VoiceChatTexture)
-		surface.SetDrawColor(color_white)
+		surface.SetDrawColor(Color(255, 255, 255))
 		surface.DrawTexturedRectRotated(scrW - 100, chboxY, Rotating * 96, 96, backwards)
 	end
 end
@@ -63,10 +63,10 @@ local function DrawLockDown()
 
 	if ( GetGlobalBool("jw", false) ) then
 		draw.RoundedBox(0, x, y, width, height, color_background)
-		draw.SimpleText("Judgement Waiver in progress!", "NameFont", x + width / 2, y + height / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw.SimpleText("Judgement Waiver in progress!", "NameFont", x + width / 2, y + height / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	elseif ( GetGlobalBool("lockdown", false) ) then
 		draw.RoundedBox(0, x, y, width, height, color_background)
-		draw.SimpleText("Lockdown in progress!", "NameFont", x + width / 2, y + height / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw.SimpleText("Lockdown in progress!", "NameFont", x + width / 2, y + height / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 end
 
@@ -81,7 +81,7 @@ usermessage.Hook("GotArrested", function(msg)
 		if ( !IsValid(client) ) then return end
 
 		if CurTime() - StartArrested <= ArrestedUntil and client:GetDarkRPVar("Arrested") then
-		draw.DrawText(apex.language.GetPhrase("youre_arrested", math.ceil(ArrestedUntil - (CurTime() - StartArrested))), "DarkRPHUD2", ScrW()/2, ScrH() - ScrH()/12, Color(color_white,255), 1)
+		draw.DrawText(apex.language.GetPhrase("youre_arrested", math.ceil(ArrestedUntil - (CurTime() - StartArrested))), "DarkRPHUD2", ScrW()/2, ScrH() - ScrH()/12, Color(Color(255, 255, 255),255), 1)
 		elseif not client:GetDarkRPVar("Arrested") then
 			Arrested = function() end
 		end
@@ -103,7 +103,7 @@ net.Receive("apex.admin.tell.all", function()
 
 	AdminTell = function()
 		draw.RoundedBox(0, x, y, width, height, color_background)
-		draw.SimpleText(apex.language.GetPhrase("listen_up"), "GModToolName", x + width / 2, y + 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+		draw.SimpleText(apex.language.GetPhrase("listen_up"), "GModToolName", x + width / 2, y + 10, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 		for i, line in ipairs(wrapped) do
 			draw.SimpleText(line, "ChatFont", x + width / 2, y + titleHeight + 10 + (i - 1) * textHeight, Color(200, 30, 30, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 		end
@@ -122,7 +122,7 @@ local function DrawPlayerModel()
 		if IsValid(PlayerIcon) then
 			PlayerIcon:Remove()
 		end
-		
+
 		PlayerIcon = vgui.Create("SpawnIcon")
 		PlayerIcon:SetPos( 25, ScrH() - 125 )
 		PlayerIcon:SetSize(60, 60)
@@ -149,10 +149,10 @@ local function DrawInfo()
 	if not HL2RP_texCache["StrawberryIcon"] then HL2RP_texCache["StrawberryIcon"] = Material("hl2rp/strawberryicon.vtf") end
 	if not HL2RP_texCache["SilkWarning"] then HL2RP_texCache["SilkWarning"] = Material("icon16/exclamation.png") end
 
-	surface.SetDrawColor(color_white)
+	surface.SetDrawColor(Color(255, 255, 255))
 	surface.SetMaterial(HL2RP_texCache["SilkUser"])
 	surface.DrawTexturedRect(18,ScrH() - 173,16,16)
-	draw.DrawText("Name: " .. client:Nick(), "NameFont", RelativeX + 40, RelativeY - HUDHeight - 57, color_white, 0)
+	draw.DrawText("Name: " .. client:Nick(), "NameFont", RelativeX + 40, RelativeY - HUDHeight - 57, Color(255, 255, 255), 0)
 
 
 	local job = client:GetDarkRPVar("job") or ""
@@ -164,30 +164,30 @@ local function DrawInfo()
 	end
 
 	local salery = client:GetDarkRPVar("salary") or 0
-	surface.SetDrawColor(color_white)
+	surface.SetDrawColor(Color(255, 255, 255))
 	surface.SetMaterial(HL2RP_texCache["SilkJob"])
 	surface.DrawTexturedRect(18,ScrH() - 31,16,16)
-	draw.DrawText("Job: " .. job, "NameFont", RelativeX + 40, RelativeY - HUDHeight + 85, color_white, 0)
+	draw.DrawText("Job: " .. job, "NameFont", RelativeX + 40, RelativeY - HUDHeight + 85, Color(255, 255, 255), 0)
 
 	surface.SetMaterial(HL2RP_texCache["SilkHeart"])
 	surface.DrawTexturedRect( RelativeX + 100,ScrH() - 140,16,16)
-	draw.DrawText("Health: " .. client:Health() or "", "NameFont", RelativeX + 125, ScrH() - 140, color_white, 0)
+	draw.DrawText("Health: " .. client:Health() or "", "NameFont", RelativeX + 125, ScrH() - 140, Color(255, 255, 255), 0)
 
 	surface.SetMaterial(HL2RP_texCache["SilkShield"])
 	surface.DrawTexturedRect( RelativeX + 100,ScrH() - 120,16,16)
-	draw.DrawText("Armour: " .. client:Armor() or "", "NameFont", RelativeX + 125, ScrH() - 120, color_white, 0)
+	draw.DrawText("Armour: " .. client:Armor() or "", "NameFont", RelativeX + 125, ScrH() - 120, Color(255, 255, 255), 0)
 
 	surface.SetMaterial(HL2RP_texCache["SilkMoney"])
 	surface.DrawTexturedRect( RelativeX + 100,ScrH() - 100,16,16)
-	draw.DrawText("Tokens: " .. "T" .. money or 0, "NameFont", RelativeX + 125, ScrH() - 100, color_white, 0)
+	draw.DrawText("Tokens: " .. "T" .. money or 0, "NameFont", RelativeX + 125, ScrH() - 100, Color(255, 255, 255), 0)
 
 	surface.SetMaterial(HL2RP_texCache["SilkSalary"])
 	surface.DrawTexturedRect( RelativeX + 100,ScrH() - 80,16,16)
-	draw.DrawText("Salary: " .. "T" .. salery, "NameFont", RelativeX + 125, ScrH() - 80, color_white, 0)
+	draw.DrawText("Salary: " .. "T" .. salery, "NameFont", RelativeX + 125, ScrH() - 80, Color(255, 255, 255), 0)
 
 	surface.SetMaterial(HL2RP_texCache["StrawberryIcon"])
 	surface.DrawTexturedRect( RelativeX + 100,ScrH() - 60,16,16)
-	draw.DrawText("Food: " .. energy .. "%", "NameFont", RelativeX + 125, ScrH() - 60, color_white, 0)
+	draw.DrawText("Food: " .. energy .. "%", "NameFont", RelativeX + 125, ScrH() - 60, Color(255, 255, 255), 0)
 
 
 end
@@ -199,15 +199,15 @@ local function DrawWarningBox(weaponName)
 	local scrW, scrH = ScrW(), ScrH()
 	draw.RoundedBox(0, 10, scrH - HUDHeight - 136, HUDWidth, 70, Color(40, 0, 0, 240))
 
-	surface.SetDrawColor(color_white)
+	surface.SetDrawColor(Color(255, 255, 255))
 	surface.SetMaterial(HL2RP_texCache["SilkWarning"])
 	surface.DrawTexturedRect(RelativeX + 10 + 8, scrH - 220, 16, 16)
 
-	surface.SetDrawColor(color_white)
+	surface.SetDrawColor(Color(255, 255, 255))
 	surface.SetMaterial(HL2RP_texCache["SilkWarning"])
 	surface.DrawTexturedRect(RelativeX + HUDWidth + 10 - 16 - 8, scrH - 220, 16, 16)
 
-	draw.DrawText("You should only use the " .. weaponName .. "\nwhile building. Using it in a RP\nsituation is FailRP and punishable.", "NameFont", RelativeX + 10 + HUDWidth / 2, RelativeY - 237.5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	draw.DrawText("You should only use the " .. weaponName .. "\nwhile building. Using it in a RP\nsituation is FailRP and punishable.", "NameFont", RelativeX + 10 + HUDWidth / 2, RelativeY - 237.5, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 local function DrawWarning()
@@ -234,12 +234,12 @@ local function DrawSide()
 	local xp = client:GetXP() or 0
 
 	draw.RoundedBox(0, scrW - 120, 80, 140, 30, Color( 0, 0, 0, 230 ) )
-	draw.DrawText("XP: " .. xp, "NameFont", scrW - 110, 87, color_white, 0)
+	draw.DrawText("XP: " .. xp, "NameFont", scrW - 110, 87, Color(255, 255, 255), 0)
 
 	draw.RoundedBox(0, scrW - 120, 120, 140, 50, Color( 0, 0, 0, 230 ) )
-	draw.DrawText("Time: " .. os.date( "%H:%M" ), "NameFont", scrW - 110, 127, color_white, 0)
+	draw.DrawText("Time: " .. os.date( "%H:%M" ), "NameFont", scrW - 110, 127, Color(255, 255, 255), 0)
 	local ICTime = StormFox2 and StormFox2.Time and StormFox2.Time.GetDisplay and StormFox2.Time.GetDisplay() or "N/A"
-	draw.DrawText("IC-Time: " .. ICTime, "NameFont", scrW - 110, 147, color_white, 0)
+	draw.DrawText("IC-Time: " .. ICTime, "NameFont", scrW - 110, 147, Color(255, 255, 255), 0)
 end
 
 net.Receive("apex.time", function()
@@ -318,14 +318,14 @@ local function DrawPlayerInfo(client)
 	end
 
 	if client:Health() < 35 then
-		draw.DrawText("Seriously injured", "DermaDefaultBold", pos.x + 1, pos.y + 12, Color(204, 0, 0, 255), 1)        
+		draw.DrawText("Seriously injured", "DermaDefaultBold", pos.x + 1, pos.y + 12, Color(204, 0, 0, 255), 1)
 		elseif client:Health() < 70 then
 		draw.DrawText("Injured", "DermaDefaultBold", pos.x + 1, pos.y + 12, Color(255, 153, 51, 255), 1)
 	end
 
 	if client:GetDarkRPVar("HasGunlicense") then
 		surface.SetMaterial(Page)
-		surface.SetDrawColor(color_white,255)
+		surface.SetDrawColor(Color(255, 255, 255),255)
 		surface.DrawTexturedRect(pos.x-16, pos.y + 60, 32, 32)
 	end
 end
@@ -392,13 +392,13 @@ local function DrawDead()
 		draw.RoundedBox(0, 0, 0, scrW, scrH, Color(10,10,10,200))
 		draw.RoundedBox(0, x, y, width, height, Color(0, 0, 0, 252))
 
-		draw.DrawText("YOU ARE DEAD!", "DermaLarge", x + width / 2, y + height / 4, color_white,TEXT_ALIGN_CENTER)
-		draw.DrawText("You were killed by " .. deathcause, "DermaDefault", x + width / 2, y + height / 4 + 35, color_white,TEXT_ALIGN_CENTER)
+		draw.DrawText("YOU ARE DEAD!", "DermaLarge", x + width / 2, y + height / 4, Color(255, 255, 255),TEXT_ALIGN_CENTER)
+		draw.DrawText("You were killed by " .. deathcause, "DermaDefault", x + width / 2, y + height / 4 + 35, Color(255, 255, 255),TEXT_ALIGN_CENTER)
 
 		if ( spawntime <= 0 ) then
-			draw.DrawText("Click your mouse to respawn", "DermaDefault", x + width / 2, y + height / 4 + 55, color_white,TEXT_ALIGN_CENTER)
+			draw.DrawText("Click your mouse to respawn", "DermaDefault", x + width / 2, y + height / 4 + 55, Color(255, 255, 255),TEXT_ALIGN_CENTER)
 		else
-			draw.DrawText("You are able to respawn in " .. string.NiceTime(spawntime), "DermaDefault", x + width / 2, y + height / 4 + 55, color_white,TEXT_ALIGN_CENTER)
+			draw.DrawText("You are able to respawn in " .. string.NiceTime(spawntime), "DermaDefault", x + width / 2, y + height / 4 + 55, Color(255, 255, 255),TEXT_ALIGN_CENTER)
 		end
 	end
 end
@@ -432,10 +432,10 @@ function DrawScanner(entity)
 			local position = entity:GetPos()
 			local angle = LocalPlayer():GetAimVector():Angle()
 
-			draw.SimpleText("POS ("..math.floor(position[1])..", "..math.floor(position[2])..", "..math.floor(position[3])..")", "nutScannerFont", x + 8, y + 8, color_white)
-			draw.SimpleText("ANG ("..math.floor(angle[1])..", "..math.floor(angle[2])..", "..math.floor(angle[3])..")", "nutScannerFont", x + 8, y + 24, color_white)
-			draw.SimpleText("ID  ("..LocalPlayer():Name()..")", "nutScannerFont", x + 8, y + 40, color_white)
-		--	draw.SimpleText("ZM  ("..(math.Round(zoom / 40, 2) * 100).."%)", "nutScannerFont", x + 8, y + 56, color_white)
+			draw.SimpleText("POS ("..math.floor(position[1])..", "..math.floor(position[2])..", "..math.floor(position[3])..")", "nutScannerFont", x + 8, y + 8, Color(255, 255, 255))
+			draw.SimpleText("ANG ("..math.floor(angle[1])..", "..math.floor(angle[2])..", "..math.floor(angle[3])..")", "nutScannerFont", x + 8, y + 24, Color(255, 255, 255))
+			draw.SimpleText("ID  ("..LocalPlayer():Name()..")", "nutScannerFont", x + 8, y + 40, Color(255, 255, 255))
+		--	draw.SimpleText("ZM  ("..(math.Round(zoom / 40, 2) * 100).."%)", "nutScannerFont", x + 8, y + 56, Color(255, 255, 255))
 
 			surface.SetDrawColor(235, 235, 235, 230)
 

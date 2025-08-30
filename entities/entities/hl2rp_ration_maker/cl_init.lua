@@ -13,7 +13,7 @@ function ENT:Draw()
                 surface.SetDrawColor(255, 255, 255, 100)
                 surface.DrawOutlinedRect(0, 0, width, height)
 
-                draw.SimpleText("+", "DermaLarge", width / 2, height / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.SimpleText("+", "DermaLarge", width / 2, height / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end,
             function()
                 net.Start("RationMaker")
