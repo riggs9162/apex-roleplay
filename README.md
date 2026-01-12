@@ -116,22 +116,160 @@ apex-roleplay/
 
 ## Gameplay Features
 
-### Jobs
-- **Citizens**: Basic class with access to tools and basic weapons
-- **Civil Worker's Union**: Manufacturing and service roles
-- **Combine Units**: Law enforcement and military classes
-- **Resistance Members**: Rebel classes with access to contraband
-- And many more custom jobs
+### Jobs System
+The gamemode features an extensive XP-based job progression system with multiple factions and special mechanics:
 
-### Economy
-- Money system with printers, shops, and trading
-- Property ownership and taxation
-- Custom shipments and vending machines
+#### Citizen Factions
+- **Citizen** (XP: 0): Basic class with access to tools and basic weapons. Forced to follow Combine dictatorship. Can choose citizen options for different playstyles (loyalist, resistance, CWU, medical paths)
+- **Civil Worker's Union** (XP: 15): Recruited citizens working for the Combine, receiving better rations and benefits. Operate businesses and sell resources for tokens. Access to manufacturing and medical supplies.
 
-### Combat
-- Custom weapon balance for roleplay scenarios
-- Combine vs Resistance faction warfare
-- Realistic damage and health systems
+#### Combine Factions
+- **Civil Protection** (XP: 35): Human police force enforcing Combine laws. Dynamic maximum based on server population (2/5 ratio). Features division system (Dispatch, Medical, etc.) and rank progression. Responsible for population control and law enforcement.
+- **Overwatch Transhuman Arm** (XP: 600): Elite military wing of Combine forces. Highly trained super-soldiers called during dire situations. Limited to 8 units maximum. Advanced nightvision and combat capabilities.
+- **City Administrator** (XP: 3000): Human appointed by Combine to run the city. Has authority to override other commanders. Handles paperwork and propaganda. Maximum 1 per server.
+
+#### Resistance & Special Classes
+- **Vortigaunt** (XP: 1200): Mysterious alien race enslaved by Combine. Wise and peaceful, forced into servitude. Restricted to VIP donators only. Cannot pick up weapons and must roleplay strictly without voice chat. Access to Vortessence energy system.
+
+Jobs include XP requirements, salary systems (most Combine jobs pay 0 tokens), custom loadouts, and death penalties that reset players to Citizen status. XP is earned through playtime (5 tokens for regular players, 10 for VIP every 10 minutes) and can be saved across sessions.
+
+### Economy System
+A comprehensive token-based economy with multiple earning and spending mechanics:
+
+#### Earning Money
+- **Job Salaries**: Regular paychecks based on job type (most jobs pay 0 tokens)
+- **Business Operations**: CWU members can operate businesses and sell resources
+- **Property Ownership**: Door ownership with rental income potential (25 tokens base cost)
+- **Ration System**: Hourly rations providing food, money, and supplies based on job (Citizens: 150 tokens, CWU: enhanced rations)
+- **Trading**: Player-to-player item and token trading
+- **Manufacturing**: CWU can produce and sell goods through various entities
+
+#### Spending & Commerce
+- **Vending Machines**: Automated dispensers selling food, supplies, and equipment. Different pricing for Combine vs citizens
+- **ATMs**: Banking system with PIN protection for secure transactions
+- **Property Purchase**: Door ownership (25 tokens base cost) with taxation system
+- **Vehicle Ownership**: Custom vehicles with purchase costs
+- **Health & Supplies**: Medical kits, food, and equipment purchases
+
+#### Advanced Features
+- **Taxation System**: Wallet taxes and property taxes configurable in settings
+- **Money Printers**: Illegal income generation (sent_zar3 entity)
+- **Cheques**: DarkRP cheque system for secure payments
+- **Shipments**: Bulk item purchasing and spawning
+- **Food System**: Hunger mechanics with configurable starvation rates (default: 3 health loss per second)
+- **Microwave Cooking**: Food preparation system for enhanced nutrition
+
+Starting money: 25 tokens. Various taxes and fees configurable via config.lua.
+
+### Combat System
+Realistic Half-Life 2 inspired combat with faction-based restrictions:
+
+#### Weapon Systems
+- **Ironsight System**: Advanced ironsight mechanics for all firearms with customizable positioning and recoil
+- **Weapon Categories**: Pistols (USP, Glock), SMGs (MP5, custom variants), rifles (M4A1, AR2 variants), shotguns, revolvers (.357), special weapons
+- **Custom Weapons**: Modified HL2 weapons with unique stats and behaviors
+- **Weapon Restrictions**: Job-based weapon access (citizens need loyalty options for firearms)
+- **Ammo Types**: Pistol (9mm), SMG (rifle), buckshot (shotgun), 357 (revolver) with job-based restrictions
+
+#### Combat Mechanics
+- **Health System**: 100 starting health, configurable respawn times (30 seconds default)
+- **Armor System**: Citizens start with 0 armor, can be upgraded through gameplay
+- **Damage System**: Realistic damage values with weapon-specific balancing
+- **Death Mechanics**: Configurable death behavior (black screen, weapon dropping, money loss on death)
+
+#### Faction Combat
+- **Combine vs Resistance**: Core faction warfare with different weapon access
+- **Law Enforcement**: Arrest system with configurable jail times (120 seconds default)
+- **Wanted System**: Criminal pursuit mechanics with configurable wanted times
+- **No-Respawn Rules**: Dead players cannot immediately rejoin combat
+
+#### Special Combat Features
+- **Emplacement Guns**: Mounted AR3 weapons on barricades for defensive positions
+- **Grenades & Explosives**: Smoke grenades and other tactical equipment
+- **Medical System**: Health restoration through medkits and rations
+- **Vortessence**: Special alien energy system for Vortigaunts
+- **Nightvision**: Combine units have access to nightvision goggles with color-coded systems
+
+### Communication Systems
+Advanced voice and text communication systems for immersive roleplay:
+
+#### Voice Systems
+- **Faction Radios**: Combine units have encrypted radio communications with channel system (/radio command)
+- **Voice Macros**: Pre-recorded voice lines for different jobs (citizens, CP, Vortigaunts)
+- **3D Voice**: Configurable voice distance and falloff
+- **Voice Restrictions**: Vortigaunts cannot use voice chat, must use text/emotes
+
+#### Radio System
+- **Channel System**: Players can set radio channels (/channel command)
+- **Faction Broadcasting**: Combine units can broadcast to their faction
+- **Encrypted Communications**: Secure channels for military operations
+
+### Administrative Systems
+Comprehensive admin tools for server management:
+
+#### FAdmin System
+- **Player Management**: Kick, ban, jail, and teleport commands
+- **Server Settings**: Dynamic configuration through admin interface
+- **Logging System**: Comprehensive admin action logging
+- **MOTD System**: Customizable message of the day
+- **RCON Access**: Remote console access for advanced administration
+
+#### Prop Protection (FPP)
+- **Ownership System**: Automatic prop ownership and protection
+- **Buddy System**: Share prop access with other players
+- **Anti-Spam**: Prevents prop spam and lag
+- **Tool Restrictions**: Configurable tool access per job
+- **Cleanup Tools**: Mass cleanup commands for administrators
+
+### User Interface & HUD
+Custom HUD and interface systems for enhanced gameplay:
+
+#### HUD Elements
+- **Job Display**: Current job and name display
+- **Health/Armor Bars**: Visual health and armor indicators
+- **Hunger System**: Food/energy bar with starvation warnings
+- **Voice Chat Icons**: Visual indicators for active voice chat
+- **Radio Channel Display**: Current radio channel indicator
+
+#### Custom Menus
+- **Vending Machine Interface**: Interactive shopping system
+- **ATM Interface**: Banking with PIN protection
+- **Admin Panel**: FAdmin interface for server management
+- **Workshop Viewer**: In-game workshop addon management (/apex_workshop_view)
+
+### Persistence & Saving
+Robust data persistence systems:
+
+#### Player Data
+- **XP System**: Experience points saved across sessions
+- **Money**: Token balances persisted to database
+- **Job Progression**: Unlocked jobs and permissions saved
+- **RP Names**: Custom roleplay names with cooldowns
+
+#### World Persistence
+- **Door Ownership**: Property ownership saved to database
+- **Entity Persistence**: Custom entities maintain state
+- **Server Configuration**: Settings saved across restarts
+
+### Special Features
+Unique gameplay mechanics that enhance the roleplay experience:
+
+#### Citizen Options
+- **Loyalist Path**: Access to legal weapons and Combine benefits
+- **Resistance Path**: Underground contraband and rebel activities
+- **CWU Path**: Manufacturing and business opportunities
+- **Medical Path**: Healthcare and ration distribution
+
+#### Combine Hierarchy
+- **Division System**: CP units can specialize in different roles
+- **Rank Progression**: Advancement through Combine ranks
+- **Nightvision Colors**: Color-coded NV systems (GRID, SPEAR, KING, etc.)
+
+#### Environmental Systems
+- **Ration Dispensers**: Job-based food distribution systems
+- **Theatre System**: In-game movie playback for roleplay events
+- **Scanner System**: Combine surveillance drones
+- **Report System**: Player reporting system for rule violations
 
 ## Troubleshooting
 
